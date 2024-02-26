@@ -6,7 +6,7 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 ## Group members:
 - Joris Beek
 - Nikola Kličková
-- Youp Lamb
+- Youp Cornelis Henry Lamb
 - Luc Melis
 - Wouter Muller
 - Luca Pulvirenti
