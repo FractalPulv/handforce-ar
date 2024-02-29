@@ -10,3 +10,14 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 - Luc Melis
 - Wouter Muller
 - Luca Pulvirenti
+
+## Hardware (TBD)
+- HoloLens 2?
+- XReal AR Glasses?
+- Quest?
+
+## Development software
+- Unity
+- Godot
+
+  
