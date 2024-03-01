@@ -26,3 +26,4 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 - Wiely van Groningen - Project Coach
 - Chris Lee - ??
 - Fred Holtkamp - Project Owner
+- Geert-Jos van der Maazen - Has a VR-set which we might need
