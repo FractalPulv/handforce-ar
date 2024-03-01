@@ -22,4 +22,7 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 - Unity?
 - Godot?
 
-  
+## Ppl we are in contact with
+- Wiely van Groningen - Project Coach
+- Chris Lee - ??
+- Fred Holtkamp - Project Owner
