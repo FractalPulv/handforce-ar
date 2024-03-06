@@ -30,7 +30,7 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 | Fred Holtkamp            | Project Owner                       |
 | Geert-Jos van der Maazen | Handforce (Has a VR-set)            |
 | Maxine A. Derksen        | Handforce                           |
-| Irene A.                 | TU/e haptics/soft robotics          |
+| Irene A. Kuling          | TU/e haptics/soft robotics          |
 | Peter van Grokom         | VR Rehab                            |
 | Anne van der Velden      | Physics hands model                 |
 
