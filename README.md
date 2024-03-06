@@ -27,3 +27,8 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 - Chris Lee - ??
 - Fred Holtkamp - Project Owner
 - Geert-Jos van der Maazen - Has a VR-set which we might need
+- Maxine - Handforce
+- Geert Jos - Handforce
+- I. Kuling - TUE haptics/soft robotics
+- Peter van Grokom - VR Rehab
+- Anne van der Velden - Physics hands model
