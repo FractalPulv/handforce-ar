@@ -22,13 +22,16 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 - Unity?
 - Godot?
 
-## Ppl we are in contact with
-- Wiely van Groningen - Project Coach
-- Chris Lee - ??
-- Fred Holtkamp - Project Owner
-- Geert-Jos van der Maazen - Has a VR-set which we might need
-- Maxine - Handforce
-- Geert Jos - Handforce
-- I. Kuling - TUE haptics/soft robotics
-- Peter van Grokom - VR Rehab
-- Anne van der Velden - Physics hands model
+## Contact people
+| Name                | Role                   |
+|---------------------|------------------------|
+| Wiely van Groningen | Project Coach          |
+| Chris Lee           | (Role not specified)   |
+| Fred Holtkamp       | Project Owner          |
+| Geert-Jos van der Maazen | Has a VR-set which we might need |
+| Maxine              | Handforce              |
+| Geert Jos           | Handforce              |
+| I. Kuling           | TUE haptics/soft robotics |
+| Peter van Grokom    | VR Rehab               |
+| Anne van der Velden | Physics hands model    |
+
