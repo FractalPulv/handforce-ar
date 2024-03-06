@@ -1,4 +1,4 @@
-# StrokeAR
+# Handforce AR
 
 ![Cover image](https://i.imgur.com/rh2T411.jpeg)
 
