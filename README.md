@@ -1,6 +1,6 @@
 # Handforce AR
 
-![Cover image](https://i.imgur.com/rh2T411.jpeg){: style="border-radius: 10px;"}
+![Cover image](https://i.imgur.com/rh2T411.jpeg)
 
 ## Table of Contents
 1. [Background](#background)
