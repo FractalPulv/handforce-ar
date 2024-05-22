@@ -1,25 +1,35 @@
 using UnityEngine;
+using System;
 
 public class CounterScript : MonoBehaviour
 {
-    private int count = 0;
+    private int count;
+    public event Action<int> OnCountChanged;
 
-    // This function can be selected in the Unity Editor's UI events
-    public void IncrementCounter()
+    public int Count
     {
-        count++;
-        Debug.Log("Counter incremented: " + count);
+        get { return count; }
+        set
+        {
+            if (count != value)
+            {
+                count = value;
+                OnCountChanged?.Invoke(count);
+            }
+        }
     }
 
-    // Another example function
-    public void ResetCounter()
-    {
-        count = 0;
-        Debug.Log("Counter reset.");
+    public int get_count(){
+        return count;
     }
-    
-    public int Count()
+
+    public void Increment()
     {
-    	return count;
+        Count++;
+    }
+
+    public void Decrement()
+    {
+        Count--;
     }
 }

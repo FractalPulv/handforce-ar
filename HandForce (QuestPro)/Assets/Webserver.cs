@@ -1,22 +1,42 @@
-
 using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Networking; // Add this directive
+using System.Collections;
+using WebSocketSharp.Server;
+using WebSocketSharp;
+
 
 public class SimpleHttpServer : MonoBehaviour
 {
     private HttpListener listener;
     private Thread listenerThread;
-    public CounterScript counterScript;
-    //private const string html = "<html><body><h1>hello</h1></body></html>";
-    
+    private string htmlFilePath;
+    private string cssFilePath;
+    private WebSocketServer wsServer;
+
+    public CounterScript counter;
+    // Variables to be injected into the HTML file
+    public string username = "Player";
+
+    private string authUsername = "admin";
+    private string authPassword = "password";
 
     void Start()
     {
-    	
-    	
+        #if UNITY_ANDROID && !UNITY_EDITOR
+            htmlFilePath = Path.Combine(Application.persistentDataPath, "index.html");
+            cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
+            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.html"));
+            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+        #else
+            htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index.html");
+            cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+        #endif
+
         // Initialize HttpListener
         listener = new HttpListener();
         listener.Prefixes.Add("http://*:8080/");
@@ -28,6 +48,9 @@ public class SimpleHttpServer : MonoBehaviour
         listenerThread.Start();
 
         Debug.Log("Server started on http://localhost:8080");
+        wsServer = new WebSocketServer(8081);
+        wsServer.AddWebSocketService<WebSocketService>("/ws");
+        wsServer.Start();
     }
 
     private void HandleRequests()
@@ -53,12 +76,172 @@ public class SimpleHttpServer : MonoBehaviour
     private void ProcessRequest(HttpListenerContext context)
     {
         var response = context.Response;
-        string count = counterScript.Count().ToString();
-	string html = "<html><body><h1>Times: "+count+"</h1></body></html>";
-        byte[] buffer = Encoding.UTF8.GetBytes(html);
+        string responseString = "";
+
+        // Check for Authorization header
+        if (!IsAuthorized(context))
+        {
+            response.StatusCode = 401;
+            response.AddHeader("WWW-Authenticate", "Basic realm=\"User Visible Realm\"");
+            responseString = "<html><body><h1>401 Unauthorized</h1></body></html>";
+            byte[] unauthorizedBuffer = Encoding.UTF8.GetBytes(responseString); // Renamed to unauthorizedBuffer
+            response.ContentLength64 = unauthorizedBuffer.Length;
+            response.OutputStream.Write(unauthorizedBuffer, 0, unauthorizedBuffer.Length);
+            response.OutputStream.Close();
+            return;
+        }
+
+        // Determine which file is being requested
+        if (context.Request.Url.AbsolutePath == "/" || context.Request.Url.AbsolutePath == "/index.html")
+        {
+            responseString = LoadHtmlFile();
+            responseString = InjectVariables(responseString);
+            response.ContentType = "text/html";
+        }
+        else if (context.Request.Url.AbsolutePath == "/style.css")
+        {
+            responseString = LoadCssFile();
+            response.ContentType = "text/css";
+        }
+        else if (context.Request.Url.AbsolutePath == "/variable")
+        {
+            HandleVariableRequest(context);
+            return;
+        }
+        else
+        {
+            responseString = "<html><body><h1>404 - File Not Found</h1></body></html>";
+            response.ContentType = "text/html";
+            response.StatusCode = 404;
+        }
+
+        byte[] buffer = Encoding.UTF8.GetBytes(responseString);
         response.ContentLength64 = buffer.Length;
         response.OutputStream.Write(buffer, 0, buffer.Length);
         response.OutputStream.Close();
+    }
+
+    private bool IsAuthorized(HttpListenerContext context)
+    {
+        string authHeader = context.Request.Headers["Authorization"];
+
+        if (authHeader != null && authHeader.StartsWith("Basic"))
+        {
+            string encodedUsernamePassword = authHeader.Substring("Basic ".Length).Trim();
+            string usernamePassword = Encoding.UTF8.GetString(Convert.FromBase64String(encodedUsernamePassword));
+
+            int separatorIndex = usernamePassword.IndexOf(':');
+            if (separatorIndex >= 0)
+            {
+                string username = usernamePassword.Substring(0, separatorIndex);
+                string password = usernamePassword.Substring(separatorIndex + 1);
+
+                return username == authUsername && password == authPassword;
+            }
+        }
+
+        return false;
+    }
+
+    private string LoadHtmlFile()
+    {
+        try
+        {
+            if (File.Exists(htmlFilePath))
+            {
+                return File.ReadAllText(htmlFilePath);
+            }
+            else
+            {
+                Debug.LogError("HTML file not found at path: " + htmlFilePath);
+                return "<html><body><h1>404 - HTML File Not Found</h1></body></html>";
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error reading HTML file: " + e.Message);
+            return "<html><body><h1>500 - Internal Server Error</h1></body></html>";
+        }
+    }
+
+    private string LoadCssFile()
+    {
+        try
+        {
+            if (File.Exists(cssFilePath))
+            {
+                return File.ReadAllText(cssFilePath);
+            }
+            else
+            {
+                Debug.LogError("CSS file not found at path: " + cssFilePath);
+                return "/* 404 - CSS File Not Found */";
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error reading CSS file: " + e.Message);
+            return "/* 500 - Internal Server Error */";
+        }
+    }
+
+    private void HandleVariableRequest(HttpListenerContext context)
+    {
+        var response = context.Response;
+        var responseData = "{\"value\": \"" + counter.get_count().ToString() + "\"}";
+
+        byte[] buffer = Encoding.UTF8.GetBytes(responseData);
+        response.ContentType = "application/json";
+        response.ContentLength64 = buffer.Length;
+        response.OutputStream.Write(buffer, 0, buffer.Length);
+        response.OutputStream.Close();
+    }
+
+    private string InjectVariables(string html)
+    {
+        // Replace placeholders with actual values
+        html = html.Replace("${username}", username);
+        html = html.Replace("${score}", counter.get_count().ToString());
+        return html;
+    }
+
+    private IEnumerator CopyStreamingAssetsToPersistentDataPath(string fileName)
+    {
+        string sourcePath = Path.Combine(Application.streamingAssetsPath, fileName);
+        string destinationPath = Path.Combine(Application.persistentDataPath, fileName);
+
+        // if (File.Exists(destinationPath))
+        // {
+        //     yield break; // File already exists, no need to copy
+        // }
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(sourcePath))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError($"Error copying {fileName} from StreamingAssets to persistent data path: {webRequest.error}");
+            }
+            else
+            {
+                File.WriteAllBytes(destinationPath, webRequest.downloadHandler.data);
+                Debug.Log($"Copied {fileName} to persistent data path");
+            }
+        }
+        
+    }
+
+    public void SendUpdate()
+    {
+        //wow
+        var NewCount = counter.get_count().ToString();
+        var NewName = "youp";
+        var updateMessage = JsonUtility.ToJson(new { NewCount});
+        foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)
+        {
+            session.Context.WebSocket.Send(NewCount);
+        }
     }
 
     void OnDestroy()
@@ -72,6 +255,10 @@ public class SimpleHttpServer : MonoBehaviour
         if (listenerThread != null && listenerThread.IsAlive)
         {
             listenerThread.Abort();
+        }
+        if (wsServer != null)
+        {
+            wsServer.Stop();
         }
     }
 }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unity WebSocket Example</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="username">Username: ${username}</h1>
+        <h2 id="score">Score: ${score}</h2>
+    </div>
+    <script>
+        // WebSocket client
+        var socket = new WebSocket("wss://stroke.emphisia.nl:443/ws");
+
+        // socket.onmessage = function(event) {
+        //     var data = JSON.parse(event.data);
+        //     if (data.username !== undefined) {
+        //         document.getElementById("username").innerText = "Username: " + data.username;
+        //     }
+        //     if (data.score !== undefined) {
+        //         
+        //     }
+        // };
+        socket.onmessage = function(event) {
+            var payload = event.data;
+            console.log('Received WebSocket message:', payload);
+            document.getElementById("score").innerText = "Score: " + payload;
+        }
+
+        socket.onopen = function(event) {
+            console.log("WebSocket connection established");
+        };
+
+        socket.onclose = function(event) {
+            console.log("WebSocket connection closed");
+        };
+
+        socket.onerror = function(error) {
+            console.error("WebSocket error:", error);
+        };
+    </script>
+</body>
+</html>
+
