@@ -18,7 +18,12 @@ public class SimpleHttpServer : MonoBehaviour
     private string cssFilePath;
     private WebSocketServer wsServer;
 
-    public CounterScript counter;
+    public CounterScript counter1;
+    public CounterScript counter2;
+    public CounterScript counter3;
+    public CounterScript counter4;
+    public CounterScript counter5;
+
     // Variables to be injected into the HTML file
     public string username = "Player";
 
@@ -51,6 +56,12 @@ public class SimpleHttpServer : MonoBehaviour
         wsServer = new WebSocketServer(8081);
         wsServer.AddWebSocketService<WebSocketService>("/ws");
         wsServer.Start();
+
+        counter1.type = "1";
+        counter2.type = "2";
+        counter3.type = "3";
+        counter4.type = "4";
+        counter5.type = "5";
     }
 
     private void HandleRequests()
@@ -102,11 +113,6 @@ public class SimpleHttpServer : MonoBehaviour
         {
             responseString = LoadCssFile();
             response.ContentType = "text/css";
-        }
-        else if (context.Request.Url.AbsolutePath == "/variable")
-        {
-            HandleVariableRequest(context);
-            return;
         }
         else
         {
@@ -185,23 +191,15 @@ public class SimpleHttpServer : MonoBehaviour
         }
     }
 
-    private void HandleVariableRequest(HttpListenerContext context)
-    {
-        var response = context.Response;
-        var responseData = "{\"value\": \"" + counter.get_count().ToString() + "\"}";
-
-        byte[] buffer = Encoding.UTF8.GetBytes(responseData);
-        response.ContentType = "application/json";
-        response.ContentLength64 = buffer.Length;
-        response.OutputStream.Write(buffer, 0, buffer.Length);
-        response.OutputStream.Close();
-    }
-
     private string InjectVariables(string html)
     {
         // Replace placeholders with actual values
         html = html.Replace("${username}", username);
-        html = html.Replace("${score}", counter.get_count().ToString());
+        html = html.Replace("${score1}", counter1.get_count().ToString());
+        html = html.Replace("${score2}", counter2.get_count().ToString());
+        html = html.Replace("${score3}", counter3.get_count().ToString());
+        html = html.Replace("${score4}", counter4.get_count().ToString());
+        html = html.Replace("${score5}", counter5.get_count().ToString());
         return html;
     }
 
@@ -232,15 +230,16 @@ public class SimpleHttpServer : MonoBehaviour
         
     }
 
-    public void SendUpdate()
+    public void SendUpdate(CounterScript counter)
     {
         //wow
         var NewCount = counter.get_count().ToString();
         var NewName = "youp";
-        var updateMessage = JsonUtility.ToJson(new { NewCount});
+        var updateMessage = JsonUtility.ToJson(counter);
+        Debug.Log(updateMessage);
         foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)
         {
-            session.Context.WebSocket.Send(NewCount);
+            session.Context.WebSocket.Send(updateMessage);
         }
     }
 

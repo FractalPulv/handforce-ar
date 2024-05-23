@@ -3,7 +3,8 @@ using System;
 
 public class CounterScript : MonoBehaviour
 {
-    private int count;
+    public int count = 0;
+    public String type = "Default";
     public event Action<int> OnCountChanged;
 
     public int Count
