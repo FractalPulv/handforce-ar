@@ -4,8 +4,21 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: ab0dfb23ac83b2648beec8ee1ea07900
+  - enabled: 1
+    path: Assets/Scenes/ExercisesMenu.unity
+    guid: e1680ecc83196484d8b6decc890d178c
+  - enabled: 1
+    path: Assets/Scenes/PoseExamplesModified.unity
+    guid: 79d72a3d750a74964998a80774cdb124
+  - enabled: 1
+    path: Assets/Scenes/Grab_HandForceScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 0116cb29c0bb14e1d9a6cd4c0e9f8f50, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 24c42edeeb291453ab66ab659614ac80, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 9974d22be75fb4ecc8b61a4e81bfb578, type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: e306a3bf38562624d8bd4dc923029e7c, type: 2}
