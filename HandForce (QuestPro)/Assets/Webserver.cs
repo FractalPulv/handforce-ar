@@ -8,6 +8,7 @@ using UnityEngine.Networking; // Add this directive
 using System.Collections;
 using WebSocketSharp.Server;
 using WebSocketSharp;
+using System.Text.RegularExpressions;
 
 
 public class SimpleHttpServer : MonoBehaviour
@@ -17,7 +18,7 @@ public class SimpleHttpServer : MonoBehaviour
     private string htmlFilePath;
     private string cssFilePath;
     private WebSocketServer wsServer;
-
+    public int Scene;
     public CounterScript counter1;
     public CounterScript counter2;
     public CounterScript counter3;
@@ -33,13 +34,53 @@ public class SimpleHttpServer : MonoBehaviour
     void Start()
     {
         #if UNITY_ANDROID && !UNITY_EDITOR
-            htmlFilePath = Path.Combine(Application.persistentDataPath, "index.html");
-            cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.html"));
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+            switch (Scene)
+            {
+                case 1:
+                    htmlFilePath = Path.Combine(Application.persistentDataPath, "index.html");
+                    cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
+                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.html"));
+                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+                    counter1.type = "1";
+                    counter2.type = "2";
+                    counter3.type = "3";
+                    counter4.type = "4";
+                    counter5.type = "5";
+                    break;
+                case 2:
+                    htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index_scene2.html");
+                    cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index_scene2.html"));
+                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+                    counter1.type = "cup";
+                    counter2.type = "complete";
+                    break;
+                default:
+                    Debug.Log("Error, incorrect scene");
+                    break;
+            }
         #else
-            htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index.html");
-            cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+            switch (Scene)
+            {
+                case 1:
+                    htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index.html");
+                    cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+                    counter1.type = "1";
+                    counter2.type = "2";
+                    counter3.type = "3";
+                    counter4.type = "4";
+                    counter5.type = "5";
+                    break;
+                case 2:
+                    htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index_scene2.html");
+                    cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+                    counter1.type = "cup";
+                    counter2.type = "complete";
+                    break;
+                default:
+                    Debug.Log("Error, incorrect scene");
+                    break;
+            }
         #endif
 
         // Initialize HttpListener
@@ -56,12 +97,6 @@ public class SimpleHttpServer : MonoBehaviour
         wsServer = new WebSocketServer(8081);
         wsServer.AddWebSocketService<WebSocketService>("/ws");
         wsServer.Start();
-
-        counter1.type = "1";
-        counter2.type = "2";
-        counter3.type = "3";
-        counter4.type = "4";
-        counter5.type = "5";
     }
 
     private void HandleRequests()
@@ -195,11 +230,23 @@ public class SimpleHttpServer : MonoBehaviour
     {
         // Replace placeholders with actual values
         html = html.Replace("${username}", username);
-        html = html.Replace("${score1}", counter1.get_count().ToString());
-        html = html.Replace("${score2}", counter2.get_count().ToString());
-        html = html.Replace("${score3}", counter3.get_count().ToString());
-        html = html.Replace("${score4}", counter4.get_count().ToString());
-        html = html.Replace("${score5}", counter5.get_count().ToString());
+        switch (Scene)
+        {
+            case 1:
+                html = html.Replace("${score1}", counter1.get_count().ToString());
+                html = html.Replace("${score2}", counter2.get_count().ToString());
+                html = html.Replace("${score3}", counter3.get_count().ToString());
+                html = html.Replace("${score4}", counter4.get_count().ToString());
+                html = html.Replace("${score5}", counter5.get_count().ToString());
+                break;
+            case 2:
+                html = html.Replace("${score1}", counter1.get_count().ToString());
+                html = html.Replace("${score2}", counter2.get_count().ToString());
+                break;
+            default:
+                Debug.Log("Error, incorrect scene");
+                break;
+        }
         return html;
     }
 
