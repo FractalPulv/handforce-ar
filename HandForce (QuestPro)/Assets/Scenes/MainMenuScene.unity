@@ -638,6 +638,7 @@ GameObject:
   - component: {fileID: 954434002}
   - component: {fileID: 954434004}
   - component: {fileID: 954434005}
+  - component: {fileID: 954434006}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -924,6 +925,14 @@ MonoBehaviour:
     ReEnterDistance: 0.02
   _closeDistanceThreshold: 0.001
   _tiebreakerScore: 0
+--- !u!222 &954434006
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954433996}
+  m_CullTransparentMesh: 1
 --- !u!1 &1210553410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,7 +1158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1585423456}
   - component: {fileID: 1585423458}
-  - component: {fileID: 1585423457}
+  - component: {fileID: 1585423459}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1166,7 +1175,7 @@ RectTransform:
   m_GameObject: {fileID: 1585423455}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.006, y: 1.006, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 592726010}
@@ -1178,7 +1187,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0.020507812, y: 0}
   m_SizeDelta: {x: 0.040986173, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1585423457
+--- !u!222 &1585423458
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585423455}
+  m_CullTransparentMesh: 1
+--- !u!114 &1585423459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1191,14 +1208,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.40101254, g: 0.65266865, b: 0.9308176, a: 0.29411766}
+  m_Color: {r: 0.4, g: 0.6509804, b: 0.92941177, a: 0.29411766}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1938207125527859653, guid: af8d87acee795ed4192fa36233eec7d9, type: 3}
+  m_Sprite: {fileID: -1938207125527859653, guid: 4dfef2d5327b4854899154386d47adf6, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1208,14 +1225,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1585423458
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1585423455}
-  m_CullTransparentMesh: 1
 --- !u!1 &1938517239
 GameObject:
   m_ObjectHideFlags: 0
