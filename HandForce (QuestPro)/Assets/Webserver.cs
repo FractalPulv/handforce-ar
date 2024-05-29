@@ -18,7 +18,7 @@ public class SimpleHttpServer : MonoBehaviour
     private string htmlFilePath;
     private string cssFilePath;
     private WebSocketServer wsServer;
-    public int Scene;
+    public int Scene = 1;
     public CounterScript counter1;
     public CounterScript counter2;
     public CounterScript counter3;
@@ -33,54 +33,30 @@ public class SimpleHttpServer : MonoBehaviour
 
     void Start()
     {
+        string HTMLFileName = "index.html";
+        switch (Scene)
+        {
+            case 1:
+                HTMLFileName = "index_scene1.html";
+                counter1.type = "cup";
+                counter2.type = "completed";
+                break;
+            case 2:
+                counter1.type = "1";
+                counter2.type = "2";
+                counter3.type = "3";
+                counter4.type = "4";
+                counter5.type = "5";
+                break;
+            default:
+                break;
+
+        }
+        htmlFilePath = Path.Combine(Application.streamingAssetsPath, HTMLFileName);
+        cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
         #if UNITY_ANDROID && !UNITY_EDITOR
-            switch (Scene)
-            {
-                case 1:
-                    htmlFilePath = Path.Combine(Application.persistentDataPath, "index.html");
-                    cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
-                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.html"));
-                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
-                    counter1.type = "1";
-                    counter2.type = "2";
-                    counter3.type = "3";
-                    counter4.type = "4";
-                    counter5.type = "5";
-                    break;
-                case 2:
-                    htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index_scene2.html");
-                    cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
-                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index_scene2.html"));
-                    StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
-                    counter1.type = "cup";
-                    counter2.type = "complete";
-                    break;
-                default:
-                    Debug.Log("Error, incorrect scene");
-                    break;
-            }
-        #else
-            switch (Scene)
-            {
-                case 1:
-                    htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index.html");
-                    cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
-                    counter1.type = "1";
-                    counter2.type = "2";
-                    counter3.type = "3";
-                    counter4.type = "4";
-                    counter5.type = "5";
-                    break;
-                case 2:
-                    htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index_scene2.html");
-                    cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
-                    counter1.type = "cup";
-                    counter2.type = "complete";
-                    break;
-                default:
-                    Debug.Log("Error, incorrect scene");
-                    break;
-            }
+            StartCoroutine(CopyStreamingAssetsToPersistentDataPath(HTMLFileName));
+            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
         #endif
 
         // Initialize HttpListener
@@ -230,22 +206,13 @@ public class SimpleHttpServer : MonoBehaviour
     {
         // Replace placeholders with actual values
         html = html.Replace("${username}", username);
-        switch (Scene)
+        html = html.Replace("${score1}", counter1.get_count().ToString());
+        html = html.Replace("${score2}", counter2.get_count().ToString());
+        if (Scene == 2)
         {
-            case 1:
-                html = html.Replace("${score1}", counter1.get_count().ToString());
-                html = html.Replace("${score2}", counter2.get_count().ToString());
-                html = html.Replace("${score3}", counter3.get_count().ToString());
-                html = html.Replace("${score4}", counter4.get_count().ToString());
-                html = html.Replace("${score5}", counter5.get_count().ToString());
-                break;
-            case 2:
-                html = html.Replace("${score1}", counter1.get_count().ToString());
-                html = html.Replace("${score2}", counter2.get_count().ToString());
-                break;
-            default:
-                Debug.Log("Error, incorrect scene");
-                break;
+            html = html.Replace("${score3}", counter3.get_count().ToString());
+            html = html.Replace("${score4}", counter4.get_count().ToString());
+            html = html.Replace("${score5}", counter5.get_count().ToString());
         }
         return html;
     }
@@ -280,8 +247,6 @@ public class SimpleHttpServer : MonoBehaviour
     public void SendUpdate(CounterScript counter)
     {
         //wow
-        var NewCount = counter.get_count().ToString();
-        var NewName = "youp";
         var updateMessage = JsonUtility.ToJson(counter);
         Debug.Log(updateMessage);
         foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)

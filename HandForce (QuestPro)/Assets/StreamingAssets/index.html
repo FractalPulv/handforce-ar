@@ -7,6 +7,7 @@
 </head>
 <body>
     <div class="container">
+        <h1> User is in Excercise 2</h1>
         <h1 id="username">Username: ${username}</h1>
         <h2 id="score1">Score 1: ${score1}</h2>
         <h2 id="score2">Score 2: ${score2}</h2>
@@ -16,7 +17,19 @@
     </div>
     <script>
         // WebSocket client
-        var socket = new WebSocket("wss://stroke.emphisia.nl:443/ws");
+        var URL = window.location.hostname +":"
+        var WebSocketType = "ws"
+        if (window.location.protocol == "https:"){
+            WebSocketType = "wss"
+            URL = URL + window.location.port;
+            
+        }
+        else{
+            port = parseInt(window.location.port,10)+1
+            URL = URL + port;
+        }
+        console.log(URL);
+        var socket = new WebSocket(WebSocketType+"://"+URL+"/ws");
 
         socket.onmessage = function(event) {
             console.log('Received WebSocket message:', event.data);
