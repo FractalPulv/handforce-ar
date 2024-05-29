@@ -112,4 +112,26 @@ public class MugTargetLogic : MonoBehaviour
         UpdateCounterText(); // Update counter text
         // Add any additional reset logic here
     }
+
+    public void ResetPosition()
+    {
+        if (mugRigidbody != null)
+        {
+            // Stop any ongoing resetting process
+            isResetting = false;
+
+            // Reset the position and rotation of the mug
+            mugRigidbody.transform.position = mugInitialPosition;
+            mugRigidbody.transform.rotation = mugInitialRotation;
+            mugRigidbody.velocity = Vector3.zero;
+            mugRigidbody.angularVelocity = Vector3.zero;
+        }
+        else if (mugPrefab != null)
+        {
+            // If mugRigidbody is null, fallback to resetting the mugPrefab
+            mugPrefab.transform.position = mugInitialPosition;
+            mugPrefab.transform.rotation = mugInitialRotation;
+        }
+    }
+
 }
