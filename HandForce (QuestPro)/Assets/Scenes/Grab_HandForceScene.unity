@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571328, b: 0.3069218, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2377,6 +2377,14 @@ PrefabInstance:
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: PokeExamples
       objectReference: {fileID: 0}
+    - target: {fileID: 2956604755644281872, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.34600002
+      objectReference: {fileID: 0}
+    - target: {fileID: 2956604755644281872, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.506
+      objectReference: {fileID: 0}
     - target: {fileID: 2956604756026971513, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_Name
       value: ExamplesMenu
@@ -2387,11 +2395,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2956604756026971515, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.262
+      value: -1.04
       objectReference: {fileID: 0}
     - target: {fileID: 2956604756026971515, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.49
+      value: 1.578
       objectReference: {fileID: 0}
     - target: {fileID: 2956604756026971515, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2488,6 +2496,18 @@ PrefabInstance:
     - target: {fileID: 3702246391893479346, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_Name
       value: BackButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3702246391893479347, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 3702246391893479347, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 3702246391893479347, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 3702246391893479347, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2602,9 +2622,17 @@ PrefabInstance:
       value: Back to Menu
       objectReference: {fileID: 0}
     - target: {fileID: 6666664217839972151, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_fontSize
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666664217839972151, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: b8f5aeb9c6de7614db2631011b869bc3, type: 2}
+    - target: {fileID: 6666664217839972151, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 42
+      objectReference: {fileID: 0}
     - target: {fileID: 6666664217839972151, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: m_sharedMaterial
       value: 
