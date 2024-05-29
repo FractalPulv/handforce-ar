@@ -6,6 +6,7 @@ public class ResetCubes : MonoBehaviour
 
 {
     public static ResetCubes instance;
+    public GameObject originPoint;
 
     List<Vector3> ObjectsPositions = new List<Vector3>() { };
     List<Quaternion> ObjectsRotations = new List<Quaternion>() { };
@@ -49,8 +50,9 @@ public class ResetCubes : MonoBehaviour
         for (int i = 0; i < ObjectsPositions.Count; i++)
         {
             Transform child = this.transform.GetChild(i);
-            child.position = ObjectsPositions[i] + new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.1f, 0.1f), Random.Range(0, 0.75f));
+            //child.position = ObjectsPositions[i] + new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.1f, 0.1f), Random.Range(0, 0.75f));
             child.rotation = ObjectsRotations[i];
+            child.position = originPoint.transform.position + new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.1f, 0.1f), Random.Range(0, 0.75f));
             child.GetComponent<Rigidbody>().velocity = Vector3.zero;
             child.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             child.GetComponent<Rigidbody>().useGravity = false;
