@@ -14,6 +14,7 @@
         <h2 id="score3">Score 3: ${score3}</h2>
         <h2 id="score4">Score 4: ${score4}</h2>
         <h2 id="score5">Score 5: ${score5}</h2>
+        <button id="sendRequestButton">Increment counter</button>
     </div>
     <script>
         // WebSocket client
@@ -26,7 +27,6 @@
         }
         else{
             port = parseInt(window.location.port,10)+1
-            URL = URL + port;
         }
         console.log(URL);
         var socket = new WebSocket(WebSocketType+"://"+URL+"/ws");
@@ -55,6 +55,19 @@
         socket.onerror = function(error) {
             console.error("WebSocket error:", error);
         };
+        document.getElementById('sendRequestButton').addEventListener('click', function() {
+            // Replace with your target URL
+            const url = window.location.protocol+'//'+window.location.hostname+":"+window.location.port+'/increment';
+            fetch(url, {
+                method: 'GET', // or 'POST' or any other method
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Add any other headers if needed
+                }
+                // If it's a POST request, you can add a body here
+                // body: JSON.stringify({ key: 'value' })
+            })
+        });
     </script>
 </body>
 </html>

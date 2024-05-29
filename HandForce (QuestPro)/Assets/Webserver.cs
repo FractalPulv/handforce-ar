@@ -37,7 +37,7 @@ public class SimpleHttpServer : MonoBehaviour
         switch (Scene)
         {
             case 1:
-                HTMLFileName = "index_scene1.html";
+                HTMLFileName = "index1.html";
                 counter1.type = "cup";
                 counter2.type = "completed";
                 break;
@@ -124,6 +124,11 @@ public class SimpleHttpServer : MonoBehaviour
         {
             responseString = LoadCssFile();
             response.ContentType = "text/css";
+        }
+        else if (context.Request.Url.AbsolutePath == "/increment")
+        {
+            counter1.Increment();
+            SendUpdate(counter1);
         }
         else
         {

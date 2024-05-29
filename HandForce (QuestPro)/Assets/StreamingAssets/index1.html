@@ -11,6 +11,7 @@
         <h1 id="username">Username: ${username}</h1>
         <h2 id="score1">Score cup: ${score1}</h2>
         <h2 id="score2">Completed: ${score2}</h2>
+        <button id="sendRequestButton">Increment counter</button>
     </div>
     <script>
         var URL = window.location.hostname +":"
@@ -51,6 +52,20 @@
         socket.onerror = function(error) {
             console.error("WebSocket error:", error);
         };
+        document.getElementById('sendRequestButton').addEventListener('click', function() {
+            // Replace with your target URL
+            const url = window.location.protocol+'//'+window.location.hostname+":"+window.location.port+'/increment';
+
+            fetch(url, {
+                method: 'GET', // or 'POST' or any other method
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Add any other headers if needed
+                }
+                // If it's a POST request, you can add a body here
+                // body: JSON.stringify({ key: 'value' })
+            })
+        });
     </script>
 </body>
 </html>
