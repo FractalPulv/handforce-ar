@@ -5,8 +5,11 @@ using TMPro;
 
 public class Pose : MonoBehaviour
 {
-
     public HandRiging handriging;
+    public GameObject gameUI;
+    public StopWatch stopWatch;
+    public GameObject tracking;
+    public GameObject endingUI;
 
     float[] pose0 = { -140, -135, -120, -85, -130, -115, -90, -110, -115, -80, -135, -110, -90, -135 };
     float[] pose1 = { -145, -160, 155, 165, 170, -125, -90, -110, -115, -80, -135, -110, -90, -135 };
@@ -28,6 +31,8 @@ public class Pose : MonoBehaviour
 
     public TMP_Text state;
 
+    int score = 0;
+
 
 
 
@@ -36,12 +41,19 @@ public class Pose : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(score >= 2)
+        {
+            stopWatch.StopTimer();
+            gameUI.SetActive(false);
+            tracking.SetActive(false);
+            endingUI.SetActive(true);
+        }
+
         if (handriging.trackLeftHand || handriging.trackRightHand)
         {
             if (handriging.trackLeftHand) anglesOfHand = handriging.angleJointsLeft;
@@ -49,7 +61,7 @@ public class Pose : MonoBehaviour
 
             if (pose0Check)
             {
-                state.SetText("Closed Hand");
+                state.SetText("Closed your hand into a fist");
                 if(checkAngles(pose0) >= 12)
                 {
                     timerValue -= Time.deltaTime;
@@ -69,7 +81,7 @@ public class Pose : MonoBehaviour
 
             if (pose1Check)
             {
-                state.SetText("1 finger");
+                state.SetText("Raise you index finger out of the fist");
                 if (checkAngles(pose1) >= 12)
                 {
                     timerValue -= Time.deltaTime;
@@ -89,7 +101,7 @@ public class Pose : MonoBehaviour
 
             if (pose2Check)
             {
-                state.SetText("2 fingers");
+                state.SetText("Raise you middle finger out of the fist");
                 if (checkAngles(pose2) >= 12)
                 {
                     timerValue -= Time.deltaTime;
@@ -109,7 +121,7 @@ public class Pose : MonoBehaviour
 
             if (pose3Check)
             {
-                state.SetText("3 fingers");
+                state.SetText("Raise your ring finger out of the fist");
                 if (checkAngles(pose3) >= 12)
                 {
                     timerValue -= Time.deltaTime;
@@ -129,7 +141,7 @@ public class Pose : MonoBehaviour
 
             if (pose4Check)
             {
-                state.SetText("4 fingers");
+                state.SetText("Raise your pinkie finger out of the fist");
                 if (checkAngles(pose4) >= 12)
                 {
                     timerValue -= Time.deltaTime;
@@ -149,7 +161,7 @@ public class Pose : MonoBehaviour
 
             if (pose5Check)
             {
-                state.SetText("Open Hand");
+                state.SetText("Open your hand fully");
                 if (checkAngles(pose5) >= 12)
                 {
                     timerValue -= Time.deltaTime;
@@ -164,6 +176,7 @@ public class Pose : MonoBehaviour
                     timerValue = 2f;
                     pose5Check = !pose5Check;
                     pose0Check = !pose0Check;
+                    score++;                
                 }
             }
 

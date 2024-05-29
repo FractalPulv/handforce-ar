@@ -5,6 +5,8 @@ using UnityEngine;
 public class CollisionHandler : MonoBehaviour
 {
     public Manipulator manipulator;
+    public TeaCupSpawnLocation teaCup;
+    public ScoreHandler scoreHandler;
 
     float timer = 2.0f;
     bool trigger = false;
@@ -27,7 +29,9 @@ public class CollisionHandler : MonoBehaviour
             }
             else
             {
-                ScoreHandler.instance.updateScore();
+                //ScoreHandler.instance.updateScore();
+                teaCup.Move();
+                scoreHandler.updateScore();
                 manipulator.enableManipulator();
                 timer = 2.0f;
                 trigger = false;

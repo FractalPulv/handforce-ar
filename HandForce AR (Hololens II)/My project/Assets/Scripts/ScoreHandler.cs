@@ -5,40 +5,41 @@ using TMPro;
 
 public class ScoreHandler : MonoBehaviour
 {
-    public static ScoreHandler instance;
-
     public TMP_Text scoreText;
+    public StopWatch stopWatch;
+    public GameObject gameUI;
+    public GameObject gameObjects;
+    public GameObject endingUI;
 
     int score = 0;
-
-    private void Awake()
-    {
-        instance = this;
-        scoreText = GetComponent<TMP_Text>();
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = score.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(score >= 10)
+        {
+            stopWatch.StopTimer();
+            gameUI.SetActive(false);
+            gameObjects.SetActive(false);
+            endingUI.SetActive(true);
+        }
     }
 
     public void resetScore()
     {
         score = 0;
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = score.ToString();
     }
     
     public void updateScore()
     {
         score += 1;
-        scoreText.text = "Score: " + score.ToString();
-        ResetCubes.instance.rndReset();
+        scoreText.text = score.ToString();
     }
 }

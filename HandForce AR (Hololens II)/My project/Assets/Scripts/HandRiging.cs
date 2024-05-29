@@ -245,4 +245,15 @@ public class HandRiging : MonoBehaviour
             if (trackRightHand) angleDisplay.display(fingerJointsObjectsRight, angleJointsRight);
         }
     }
+
+    public void switchHand()
+    {
+        trackLeftHand = !trackLeftHand;
+        trackRightHand = !trackRightHand;
+    }
+
+    public void ToggleHandDisplay()
+    {
+        displayJointsAndBones = !displayJointsAndBones;
+    }
 }
