@@ -4,17 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Testing Scene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/12345Exercise.unity
-    guid: 8e2ab749938550b4d8f95e477da35611
-  - enabled: 0
-    path: Assets/Scenes/TeaCupExercise.unity
-    guid: 5b992e1ad0796314391c757b0555cfd2
+  m_Scenes: []
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 2bc7b882119dcee4ebb1c93c35fd9f3e, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: a16f49f08d242c74388c04e219bc1a80, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 6dda41f7a962cfb43880036619a2963b, type: 2}

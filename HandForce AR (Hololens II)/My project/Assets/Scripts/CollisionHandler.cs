@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CollisionHandler : MonoBehaviour
 {
+    public Manipulator manipulator;
+
+    float timer = 2.0f;
+    bool trigger = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,19 +17,29 @@ public class CollisionHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (trigger)
+        {
+            manipulator.disableManipulator();
+
+            if (timer >= 0)
+            {
+                timer -= Time.deltaTime;
+            }
+            else
+            {
+                ScoreHandler.instance.updateScore();
+                manipulator.enableManipulator();
+                timer = 2.0f;
+                trigger = false;
+            }
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name == "TriggerZone")
         {
-            Debug.Log(this.GetComponent<Rigidbody>().velocity);
-
-            //if (this.GetComponent<Rigidbody>().velocity == Vector3.zero)
-            //{
-                ScoreHandler.instance.updateScore();
-            //}
+            trigger = true;
         }
     }
 }
