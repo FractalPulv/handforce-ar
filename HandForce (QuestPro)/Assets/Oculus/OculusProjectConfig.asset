@@ -36,7 +36,7 @@ MonoBehaviour:
   insightPassthroughEnabled: 0
   _insightPassthroughSupport: 1
   _processorFavor: 0
-  systemSplashScreen: {fileID: 0}
+  systemSplashScreen: {fileID: 2800000, guid: c36bded80605e94c7a3d162c2b037857, type: 3}
   systemSplashScreenType: 0
   _systemLoadingScreenBackground: 0
   ovrPluginMd5Win64: e2f96821b9509a5aaf6b44cbb1768183040cd210b9e922343f05d4e31303bdf7
