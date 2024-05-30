@@ -25,6 +25,8 @@ public class PoseMaintainLogic : MonoBehaviour
     private bool isPoseHeld = false;
     private string currentPose;
 
+    private HashSet<string> completedPoses = new HashSet<string>();
+
     void Update()
     {
         if (isPoseHeld)
@@ -59,6 +61,7 @@ public class PoseMaintainLogic : MonoBehaviour
     {
         isPoseHeld = false;
         _progressIndicator.fillAmount = 1f;
+        completedPoses.Add(currentPose);
 
         switch (currentPose)
         {
@@ -78,6 +81,21 @@ public class PoseMaintainLogic : MonoBehaviour
                 _label5.color = Color.blue;
                 break;
         }
+
+        if (completedPoses.Count == 5)
+        {
+            ResetColors();
+        }
+    }
+
+    private void ResetColors()
+    {
+        _label1.color = Color.white; // Reset to original color
+        _label2.color = Color.white;
+        _label3.color = Color.white;
+        _label4.color = Color.white;
+        _label5.color = Color.white;
+        completedPoses.Clear();
     }
 
     public void OnSign1Detected()
@@ -94,7 +112,6 @@ public class PoseMaintainLogic : MonoBehaviour
     {
         OnPoseDetected("Sign 3");
     }
-
 
     public void OnSign4Detected()
     {
