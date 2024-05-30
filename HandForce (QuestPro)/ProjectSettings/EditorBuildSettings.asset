@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainMenuScene.unity
     guid: ab0dfb23ac83b2648beec8ee1ea07900
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/ExercisesMenu.unity
     guid: e1680ecc83196484d8b6decc890d178c
   - enabled: 1
     path: Assets/Scenes/PoseExamplesModified.unity
     guid: 79d72a3d750a74964998a80774cdb124
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Grab_HandForceScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
