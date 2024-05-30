@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unity WebSocket Example</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="username">Username: ${username}</h1>
+        <h2 id="score1">Score 1: ${score1}</h2>
+        <h2 id="score2">Score 2: ${score2}</h2>
+        <h2 id="score3">Score 3: ${score3}</h2>
+        <h2 id="score4">Score 4: ${score4}</h2>
+        <h2 id="score5">Score 5: ${score5}</h2>
+        <button id="sendRequestButton">Send Request</button>
+    </div>
+    <script>
+        var IP = "192.168.2.37"    //REPLACE THIS WITH THE IP OF THE HOLOLENS
+        // WebSocket client
+        var socket = new WebSocket("ws://"+IP+":8081/ws");
+
+        socket.onmessage = function(event) {
+            console.log('Received WebSocket message:', event.data);
+            var data = JSON.parse(event.data);
+            
+                document.getElementById("score"+data.type).innerText = "Score "+ data.type + " : " + data.count;
+
+        };
+        // socket.onmessage = function(event) {
+        //     var payload = event.data;
+        //     console.log('Received WebSocket message:', payload);
+        //     document.getElementById("score").innerText = "Score: " + payload;
+        // }
+
+        socket.onopen = function(event) {
+            console.log("WebSocket connection established");
+        };
+
+        socket.onclose = function(event) {
+            console.log("WebSocket connection closed");
+        };
+
+        socket.onerror = function(error) {
+            console.error("WebSocket error:", error);
+        };
+
+        // Inline JavaScript for sending a request on button click
+        document.getElementById('sendRequestButton').addEventListener('click', function() {
+            // Replace with your target URL
+            const url = 'http://'+IP+':8080/increment';
+
+            fetch(url, {
+                method: 'GET', // or 'POST' or any other method
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Add any other headers if needed
+                }
+                // If it's a POST request, you can add a body here
+                // body: JSON.stringify({ key: 'value' })
+            })
+        });
+    </script>
+</body>
+</html>
