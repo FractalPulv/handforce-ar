@@ -8,7 +8,6 @@ using UnityEngine.Networking; // Add this directive
 using System.Collections;
 using WebSocketSharp.Server;
 using WebSocketSharp;
-using System.Text.RegularExpressions;
 
 
 public class SimpleHttpServer : MonoBehaviour
@@ -18,7 +17,7 @@ public class SimpleHttpServer : MonoBehaviour
     private string htmlFilePath;
     private string cssFilePath;
     private WebSocketServer wsServer;
-    public int Scene = 1;
+
     public CounterScript counter1;
     public CounterScript counter2;
     public CounterScript counter3;
@@ -33,30 +32,14 @@ public class SimpleHttpServer : MonoBehaviour
 
     void Start()
     {
-        string HTMLFileName = "index.html";
-        switch (Scene)
-        {
-            case 1:
-                HTMLFileName = "index1.html";
-                counter1.type = "cup";
-                counter2.type = "completed";
-                break;
-            case 2:
-                counter1.type = "1";
-                counter2.type = "2";
-                counter3.type = "3";
-                counter4.type = "4";
-                counter5.type = "5";
-                break;
-            default:
-                break;
-
-        }
-        htmlFilePath = Path.Combine(Application.streamingAssetsPath, HTMLFileName);
-        cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
         #if UNITY_ANDROID && !UNITY_EDITOR
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath(HTMLFileName));
+            htmlFilePath = Path.Combine(Application.persistentDataPath, "index.html");
+            cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
+            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.html"));
             StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+        #else
+            htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index.html");
+            cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
         #endif
 
         // Initialize HttpListener
@@ -73,6 +56,12 @@ public class SimpleHttpServer : MonoBehaviour
         wsServer = new WebSocketServer(8081);
         wsServer.AddWebSocketService<WebSocketService>("/ws");
         wsServer.Start();
+
+        counter1.type = "1";
+        counter2.type = "2";
+        counter3.type = "3";
+        counter4.type = "4";
+        counter5.type = "5";
     }
 
     private void HandleRequests()
@@ -124,11 +113,6 @@ public class SimpleHttpServer : MonoBehaviour
         {
             responseString = LoadCssFile();
             response.ContentType = "text/css";
-        }
-        else if (context.Request.Url.AbsolutePath == "/increment")
-        {
-            counter1.Increment();
-            SendUpdate(counter1);
         }
         else
         {
@@ -213,12 +197,9 @@ public class SimpleHttpServer : MonoBehaviour
         html = html.Replace("${username}", username);
         html = html.Replace("${score1}", counter1.get_count().ToString());
         html = html.Replace("${score2}", counter2.get_count().ToString());
-        if (Scene == 2)
-        {
-            html = html.Replace("${score3}", counter3.get_count().ToString());
-            html = html.Replace("${score4}", counter4.get_count().ToString());
-            html = html.Replace("${score5}", counter5.get_count().ToString());
-        }
+        html = html.Replace("${score3}", counter3.get_count().ToString());
+        html = html.Replace("${score4}", counter4.get_count().ToString());
+        html = html.Replace("${score5}", counter5.get_count().ToString());
         return html;
     }
 
@@ -252,6 +233,8 @@ public class SimpleHttpServer : MonoBehaviour
     public void SendUpdate(CounterScript counter)
     {
         //wow
+        var NewCount = counter.get_count().ToString();
+        var NewName = "youp";
         var updateMessage = JsonUtility.ToJson(counter);
         Debug.Log(updateMessage);
         foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)
