@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Oculus.Interaction;
 
 public class MugTargetLogic : MonoBehaviour
 {
@@ -59,13 +60,23 @@ public class MugTargetLogic : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Rigidbody rb = other.attachedRigidbody;
-        if (rb != null && rb.CompareTag("Mug"))
+        if (rb!= null && rb.CompareTag("Mug"))
         {
+            // Temporarily disable the grabbable component to prevent further interaction
+            Grabbable grabbableComponent = rb.GetComponent<Grabbable>();
+            if (grabbableComponent!= null)
+            {
+                grabbableComponent.enabled = false;
+            }
+
             mugRigidbody = rb;
-            currentCount++; // Increase the count
+            currentCount++;
+            // Increase the count
             WebserverCounter.Increment();
             Webserver.SendUpdate(WebserverCounter);
-            UpdateCounterText(); // Update counter text
+            UpdateCounterText();
+            // Update counter text
+
             if (currentCount >= targetCount)
             {
                 WebserverCounterCompleted.Increment();
@@ -76,7 +87,19 @@ public class MugTargetLogic : MonoBehaviour
             {
                 SuccessFeedback(); // Show success particles
             }
+
             isResetting = true; // Start resetting the mug position
+            // Instantly reset the mug's position to avoid multiple triggers
+            mugRigidbody.transform.position = mugInitialPosition;
+            mugRigidbody.transform.rotation = mugInitialRotation;
+            mugRigidbody.velocity = Vector3.zero;
+            mugRigidbody.angularVelocity = Vector3.zero;
+
+            // Re-enable the grabbable component after resetting the position
+            if (grabbableComponent!= null)
+            {
+                grabbableComponent.enabled = true;
+            }
         }
     }
 
