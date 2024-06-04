@@ -18,6 +18,7 @@ public class SimpleHttpServer : MonoBehaviour
     private Thread listenerThread;
     private string htmlFilePath;
     private string cssFilePath;
+    private string jsFilePath;
     private WebSocketServer wsServer;
 
     public CounterScript counter1;
@@ -25,6 +26,7 @@ public class SimpleHttpServer : MonoBehaviour
     public CounterScript counter3;
     public CounterScript counter4;
     public CounterScript counter5;
+    public CounterScript counter6;
 
     // Variables to be injected into the HTML file
     public string username = "Player";
@@ -47,6 +49,7 @@ public class SimpleHttpServer : MonoBehaviour
                 counter3.type = "3";
                 counter4.type = "4";
                 counter5.type = "Completed";
+                counter6.type = "6";
                 break;
             case 2:
                 htmlFileName = "index.html";
@@ -55,6 +58,7 @@ public class SimpleHttpServer : MonoBehaviour
                 counter3.type = "3";
                 counter4.type = "4";
                 counter5.type = "5";
+                counter6.type = "completed";
                 break;
             default:
                 break;
@@ -64,13 +68,16 @@ public class SimpleHttpServer : MonoBehaviour
         #if UNITY_ANDROID && !UNITY_EDITOR
             htmlFilePath = Path.Combine(Application.persistentDataPath, htmlFileName);
             cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
+            jsFilePath = Path.Combine(Application.persistentDataPath, "index.js");
             for (int i = 0; i < htmlFileNames.Length; i++){
                 StartCoroutine(CopyStreamingAssetsToPersistentDataPath(htmlFileNames[i]));
                 StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+                StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.js"));
             }
         #else
             htmlFilePath = Path.Combine(Application.streamingAssetsPath, htmlFileName);
             cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+            jsFilePath = Path.Combine(Application.persistentDataPath, "index.js");
         #endif
 
         // Initialize HttpListener
@@ -139,6 +146,11 @@ public class SimpleHttpServer : MonoBehaviour
         {
             responseString = LoadCssFile();
             response.ContentType = "text/css";
+        }
+        else if (context.Request.Url.AbsolutePath == "/index.js")
+        {
+            responseString = LoadJsFile();
+            response.ContentType = "text/js";
         }
         else
         {
@@ -217,6 +229,27 @@ public class SimpleHttpServer : MonoBehaviour
         }
     }
 
+    private string LoadJsFile()
+    {
+        try
+        {
+            if (File.Exists(jsFilePath))
+            {
+                return File.ReadAllText(jsFilePath);
+            }
+            else
+            {
+                Debug.LogError("CSS file not found at path: " + jsFilePath);
+                return "/* 404 - CSS File Not Found */";
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error reading CSS file: " + e.Message);
+            return "/* 500 - Internal Server Error */";
+        }
+    }
+
     private string InjectVariables(string html)
     {
         // Replace placeholders with actual values
@@ -226,6 +259,7 @@ public class SimpleHttpServer : MonoBehaviour
         html = html.Replace("${score3}", counter3.get_count().ToString());
         html = html.Replace("${score4}", counter4.get_count().ToString());
         html = html.Replace("${score5}", counter5.get_count().ToString());
+        html = html.Replace("${score6}", counter6.get_count().ToString());
         return html;
     }
 
@@ -258,9 +292,6 @@ public class SimpleHttpServer : MonoBehaviour
 
     public void SendUpdate(CounterScript counter)
     {
-        //wow
-        var NewCount = counter.get_count().ToString();
-        var NewName = "youp";
         var updateMessage = JsonUtility.ToJson(counter);
         Debug.Log(updateMessage);
         foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)

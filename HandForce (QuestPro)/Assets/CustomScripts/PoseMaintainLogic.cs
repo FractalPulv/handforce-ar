@@ -20,6 +20,22 @@ public class PoseMaintainLogic : MonoBehaviour
     [SerializeField]
     private Image _progressIndicator;
 
+
+    [SerializeField]
+    private CounterScript _counter1;
+    [SerializeField]
+    private CounterScript _counter2;
+    [SerializeField]
+    private CounterScript _counter3;
+    [SerializeField]
+    private CounterScript _counter4;
+    [SerializeField]
+    private CounterScript _counter5;
+    [SerializeField]
+    private CounterScript _counter6;
+    [SerializeField]
+    private SimpleHttpServer _httpServer;
+
     private const float requiredHoldTime = 3f;
     private float holdTimer = 0f;
     private bool isPoseHeld = false;
@@ -66,24 +82,46 @@ public class PoseMaintainLogic : MonoBehaviour
         switch (currentPose)
         {
             case "Sign 1":
+                _counter1.Increment();
+                _httpServer.SendUpdate(_counter1);
                 _label1.color = Color.blue;
                 break;
             case "Sign 2":
+                _counter2.Increment();
+                _httpServer.SendUpdate(_counter2);
                 _label2.color = Color.blue;
                 break;
             case "Sign 3":
+                _counter3.Increment();
+                _httpServer.SendUpdate(_counter3);
                 _label3.color = Color.blue;
                 break;
             case "Sign 4":
+                _counter4.Increment();
+                _httpServer.SendUpdate(_counter4);
                 _label4.color = Color.blue;
                 break;
             case "Sign 5":
+                _counter5.Increment();
+                _httpServer.SendUpdate(_counter5);
                 _label5.color = Color.blue;
                 break;
         }
 
         if (completedPoses.Count == 5)
         {
+            _counter6.Increment();
+            _httpServer.SendUpdate(_counter6);
+            _counter1.count = 0;
+            _counter2.count = 0;
+            _counter3.count = 0;
+            _counter4.count = 0;
+            _counter5.count = 0;
+            _httpServer.SendUpdate(_counter1);
+            _httpServer.SendUpdate(_counter2);
+            _httpServer.SendUpdate(_counter3);
+            _httpServer.SendUpdate(_counter4);
+            _httpServer.SendUpdate(_counter5);
             ResetColors();
         }
     }

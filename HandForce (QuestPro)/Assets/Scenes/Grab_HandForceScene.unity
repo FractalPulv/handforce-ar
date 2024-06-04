@@ -1121,6 +1121,7 @@ MonoBehaviour:
   counter3: {fileID: 924471380}
   counter4: {fileID: 924471380}
   counter5: {fileID: 924471380}
+  counter6: {fileID: 924471380}
   username: Player
   authUsername: admin
   authPassword: password
