@@ -6295,6 +6295,9 @@ MonoBehaviour:
   counter4: {fileID: 99213803}
   counter5: {fileID: 205189057}
   username: Player
+  authUsername: admin
+  authPassword: password
+  Scene: 2
 --- !u!1 &2021561362
 GameObject:
   m_ObjectHideFlags: 0

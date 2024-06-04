@@ -8,6 +8,8 @@ using UnityEngine.Networking; // Add this directive
 using System.Collections;
 using WebSocketSharp.Server;
 using WebSocketSharp;
+using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 
 
 public class SimpleHttpServer : MonoBehaviour
@@ -27,18 +29,47 @@ public class SimpleHttpServer : MonoBehaviour
     // Variables to be injected into the HTML file
     public string username = "Player";
 
-    private string authUsername = "admin";
-    private string authPassword = "password";
+    public string authUsername = "admin";
+    public string authPassword = "password";
+
+    public int Scene = 0;
 
     void Start()
     {
+        string[] htmlFileNames = {"mainMenu.html","sceneOne.html","index.html"};
+        string htmlFileName = "mainMenu.html";
+        switch (Scene)
+        {
+            case 1:
+                htmlFileName = "sceneOne.html";
+                counter1.type = "Count";
+                counter2.type = "2";
+                counter3.type = "3";
+                counter4.type = "4";
+                counter5.type = "Completed";
+                break;
+            case 2:
+                htmlFileName = "index.html";
+                counter1.type = "1";
+                counter2.type = "2";
+                counter3.type = "3";
+                counter4.type = "4";
+                counter5.type = "5";
+                break;
+            default:
+                break;
+
+        }
+        
         #if UNITY_ANDROID && !UNITY_EDITOR
-            htmlFilePath = Path.Combine(Application.persistentDataPath, "index.html");
+            htmlFilePath = Path.Combine(Application.persistentDataPath, htmlFileName);
             cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.html"));
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+            for (int i = 0; i < htmlFileNames.Length; i++){
+                StartCoroutine(CopyStreamingAssetsToPersistentDataPath(htmlFileNames[i]));
+                StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+            }
         #else
-            htmlFilePath = Path.Combine(Application.streamingAssetsPath, "index.html");
+            htmlFilePath = Path.Combine(Application.streamingAssetsPath, htmlFileName);
             cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
         #endif
 
@@ -57,11 +88,6 @@ public class SimpleHttpServer : MonoBehaviour
         wsServer.AddWebSocketService<WebSocketService>("/ws");
         wsServer.Start();
 
-        counter1.type = "1";
-        counter2.type = "2";
-        counter3.type = "3";
-        counter4.type = "4";
-        counter5.type = "5";
     }
 
     private void HandleRequests()
