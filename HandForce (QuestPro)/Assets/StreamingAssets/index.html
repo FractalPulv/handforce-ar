@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Unity WebSocket Example</title>
+    <title>Handforce excersise website</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="index.js"></script> 
 </head>
 <body>
     <div class="container">
@@ -14,61 +15,9 @@
         <h2 id="score3">Score 3: ${score3}</h2>
         <h2 id="score4">Score 4: ${score4}</h2>
         <h2 id="score5">Score 5: ${score5}</h2>
+        <h2 id="scorecompleted">Score completed: ${score6}</h2>
         <button id="sendRequestButton">Increment counter</button>
     </div>
-    <script>
-        // WebSocket client
-        var URL = window.location.hostname +":"
-        var WebSocketType = "ws"
-        if (window.location.protocol == "https:"){
-            WebSocketType = "wss"
-            URL = URL + window.location.port;
-            
-        }
-        else{
-            port = parseInt(window.location.port,10)+1
-        }
-        console.log(URL);
-        var socket = new WebSocket(WebSocketType+"://"+URL+"/ws");
-
-        socket.onmessage = function(event) {
-            console.log('Received WebSocket message:', event.data);
-            var data = JSON.parse(event.data);
-            
-                document.getElementById("score"+data.type).innerText = "Score "+ data.type + " : " + data.count;
-
-        };
-        // socket.onmessage = function(event) {
-        //     var payload = event.data;
-        //     console.log('Received WebSocket message:', payload);
-        //     document.getElementById("score").innerText = "Score: " + payload;
-        // }
-
-        socket.onopen = function(event) {
-            console.log("WebSocket connection established");
-        };
-
-        socket.onclose = function(event) {
-            console.log("WebSocket connection closed");
-        };
-
-        socket.onerror = function(error) {
-            console.error("WebSocket error:", error);
-        };
-        document.getElementById('sendRequestButton').addEventListener('click', function() {
-            // Replace with your target URL
-            const url = window.location.protocol+'//'+window.location.hostname+":"+window.location.port+'/increment';
-            fetch(url, {
-                method: 'GET', // or 'POST' or any other method
-                headers: {
-                    'Content-Type': 'application/json'
-                    // Add any other headers if needed
-                }
-                // If it's a POST request, you can add a body here
-                // body: JSON.stringify({ key: 'value' })
-            })
-        });
-    </script>
 </body>
 </html>
 

@@ -9,6 +9,7 @@ using System.Collections;
 using WebSocketSharp.Server;
 using WebSocketSharp;
 using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 
 
 public class SimpleHttpServer : MonoBehaviour
@@ -17,46 +18,66 @@ public class SimpleHttpServer : MonoBehaviour
     private Thread listenerThread;
     private string htmlFilePath;
     private string cssFilePath;
+    private string jsFilePath;
     private WebSocketServer wsServer;
-    public int Scene = 1;
+
     public CounterScript counter1;
     public CounterScript counter2;
     public CounterScript counter3;
     public CounterScript counter4;
     public CounterScript counter5;
+    public CounterScript counter6;
 
     // Variables to be injected into the HTML file
     public string username = "Player";
 
-    private string authUsername = "admin";
-    private string authPassword = "password";
+    public string authUsername = "admin";
+    public string authPassword = "password";
+
+    public int Scene = 0;
 
     void Start()
     {
-        string HTMLFileName = "index.html";
+        string[] htmlFileNames = {"mainMenu.html","sceneOne.html","index.html"};
+        string htmlFileName = "mainMenu.html";
         switch (Scene)
         {
             case 1:
-                HTMLFileName = "index1.html";
-                counter1.type = "cup";
-                counter2.type = "completed";
+                htmlFileName = "sceneOne.html";
+                counter1.type = "Count";
+                counter2.type = "2";
+                counter3.type = "3";
+                counter4.type = "4";
+                counter5.type = "Completed";
+                counter6.type = "6";
                 break;
             case 2:
+                htmlFileName = "index.html";
                 counter1.type = "1";
                 counter2.type = "2";
                 counter3.type = "3";
                 counter4.type = "4";
                 counter5.type = "5";
+                counter6.type = "completed";
                 break;
             default:
                 break;
 
         }
-        htmlFilePath = Path.Combine(Application.streamingAssetsPath, HTMLFileName);
-        cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+        
         #if UNITY_ANDROID && !UNITY_EDITOR
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath(HTMLFileName));
-            StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+            htmlFilePath = Path.Combine(Application.persistentDataPath, htmlFileName);
+            cssFilePath = Path.Combine(Application.persistentDataPath, "style.css");
+            jsFilePath = Path.Combine(Application.persistentDataPath, "index.js");
+            for (int i = 0; i < htmlFileNames.Length; i++){
+                StartCoroutine(CopyStreamingAssetsToPersistentDataPath(htmlFileNames[i]));
+                StartCoroutine(CopyStreamingAssetsToPersistentDataPath("style.css"));
+                StartCoroutine(CopyStreamingAssetsToPersistentDataPath("index.js"));
+            }
+        #else
+            htmlFilePath = Path.Combine(Application.streamingAssetsPath, htmlFileName);
+            cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
+            jsFilePath = Path.Combine(Application.persistentDataPath, "index.js");
         #endif
 
         // Initialize HttpListener
@@ -73,6 +94,7 @@ public class SimpleHttpServer : MonoBehaviour
         wsServer = new WebSocketServer(8081);
         wsServer.AddWebSocketService<WebSocketService>("/ws");
         wsServer.Start();
+
     }
 
     private void HandleRequests()
@@ -125,10 +147,10 @@ public class SimpleHttpServer : MonoBehaviour
             responseString = LoadCssFile();
             response.ContentType = "text/css";
         }
-        else if (context.Request.Url.AbsolutePath == "/increment")
+        else if (context.Request.Url.AbsolutePath == "/index.js")
         {
-            counter1.Increment();
-            SendUpdate(counter1);
+            responseString = LoadJsFile();
+            response.ContentType = "text/js";
         }
         else
         {
@@ -207,18 +229,37 @@ public class SimpleHttpServer : MonoBehaviour
         }
     }
 
+    private string LoadJsFile()
+    {
+        try
+        {
+            if (File.Exists(jsFilePath))
+            {
+                return File.ReadAllText(jsFilePath);
+            }
+            else
+            {
+                Debug.LogError("CSS file not found at path: " + jsFilePath);
+                return "/* 404 - CSS File Not Found */";
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error reading CSS file: " + e.Message);
+            return "/* 500 - Internal Server Error */";
+        }
+    }
+
     private string InjectVariables(string html)
     {
         // Replace placeholders with actual values
         html = html.Replace("${username}", username);
         html = html.Replace("${score1}", counter1.get_count().ToString());
         html = html.Replace("${score2}", counter2.get_count().ToString());
-        if (Scene == 2)
-        {
-            html = html.Replace("${score3}", counter3.get_count().ToString());
-            html = html.Replace("${score4}", counter4.get_count().ToString());
-            html = html.Replace("${score5}", counter5.get_count().ToString());
-        }
+        html = html.Replace("${score3}", counter3.get_count().ToString());
+        html = html.Replace("${score4}", counter4.get_count().ToString());
+        html = html.Replace("${score5}", counter5.get_count().ToString());
+        html = html.Replace("${score6}", counter6.get_count().ToString());
         return html;
     }
 
@@ -251,7 +292,6 @@ public class SimpleHttpServer : MonoBehaviour
 
     public void SendUpdate(CounterScript counter)
     {
-        //wow
         var updateMessage = JsonUtility.ToJson(counter);
         Debug.Log(updateMessage);
         foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)

@@ -591,6 +591,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 702870320}
   m_CullTransparentMesh: 1
+--- !u!1 &797269381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 797269383}
+  - component: {fileID: 797269382}
+  - component: {fileID: 797269384}
+  m_Layer: 0
+  m_Name: Website
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &797269382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797269381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bce781f8f9ba32eeb68de47d72e135b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  counter1: {fileID: 797269384}
+  counter2: {fileID: 797269384}
+  counter3: {fileID: 797269384}
+  counter4: {fileID: 797269384}
+  counter5: {fileID: 797269384}
+  counter6: {fileID: 797269384}
+  username: Player
+  authUsername: admin
+  authPassword: password
+  Scene: 0
+--- !u!4 &797269383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797269381}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5963186, y: 1.5383627, z: 0.8292504}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &797269384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797269381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86bee9bdf51f56da8939eb62d15d3a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  count: 0
+  type: Default
 --- !u!1 &932792813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1619,3 +1688,4 @@ SceneRoots:
   - {fileID: 954434000}
   - {fileID: 932792816}
   - {fileID: 2058789825}
+  - {fileID: 797269383}
