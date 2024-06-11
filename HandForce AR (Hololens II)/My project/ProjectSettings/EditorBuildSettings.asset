@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/0_MainMenuScene.unity
+    path: Assets/Scenes/1_MainMenuScene.unity
     guid: 75329805f0d3d1e438ca16a86eb573e5
   - enabled: 1
-    path: Assets/Scenes/1_12345Exercise.unity
+    path: Assets/Scenes/2_12345Exercise.unity
     guid: 5e793c612f3999d4690d422ff581a098
   - enabled: 1
-    path: Assets/Scenes/2_TeaCupExercise.unity
+    path: Assets/Scenes/3_TeaCupExercise.unity
     guid: 096e6e252f33b8149ba356f6e8bf6842
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 2bc7b882119dcee4ebb1c93c35fd9f3e, type: 2}

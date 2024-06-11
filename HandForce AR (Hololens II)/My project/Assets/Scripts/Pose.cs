@@ -222,4 +222,9 @@ public class Pose : MonoBehaviour
             return score;
         }
     }
+
+    public float CheckTime()
+    {
+        return timerValue;
+    }
 }

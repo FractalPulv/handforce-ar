@@ -8,6 +8,10 @@ public class TeaCupSpawnLocation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+
+    private void OnEnable()
+    {
         this.transform.position = referenceObject.transform.position + new Vector3(0, 0.20f, 0);
     }
 
