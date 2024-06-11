@@ -2693,14 +2693,14 @@ PrefabInstance:
     - target: {fileID: 4114382283797518650, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 808732737}
+      objectReference: {fileID: 808732739}
     - target: {fileID: 4114382283797518650, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadScene
+      value: ChangeScene
       objectReference: {fileID: 0}
     - target: {fileID: 4114382283797518650, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SceneLoader, Assembly-CSharp
+      value: SceneController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4114382283797518650, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -2894,7 +2894,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2956604756026971513, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 808732737}
+      addedObject: {fileID: 808732739}
     - targetCorrespondingSourceObject: {fileID: 2402697896953830712, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -2904,7 +2904,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2956604756026971513, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
   m_PrefabInstance: {fileID: 808732735}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &808732737
+--- !u!4 &808732738 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2956604756026971515, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
+  m_PrefabInstance: {fileID: 808732735}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &808732739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2913,14 +2918,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 808732736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d6985387d70c0c43940de20713e1ed1, type: 3}
+  m_Script: {fileID: 11500000, guid: 03f4bd8f36bd4754f8dadf0c523fbccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &808732738 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2956604756026971515, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
-  m_PrefabInstance: {fileID: 808732735}
-  m_PrefabAsset: {fileID: 0}
+  sceneName: Grab_HandForceScene
+  initialObject: {fileID: 808732736}
 --- !u!1 &836244527
 GameObject:
   m_ObjectHideFlags: 0
