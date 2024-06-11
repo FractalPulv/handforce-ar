@@ -5,15 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class ExercisesMenuSceneSelector : MonoBehaviour
 {
-    public void CoreExercise()
+    public void LoadCoreExercise()
     {
-        Debug.Log("Cup Exercise");
+        Debug.Log("Loading Core Exercise");
+        FindObjectOfType<Scenemanager>().SelectLoadingScene("PoseExamplesModified");
+    }
+
+    public void LoadThemedExercise()
+    {
+        Debug.Log("Loading Themed Exercise");
         FindObjectOfType<Scenemanager>().SelectLoadingScene("Grab_HandForceScene");
     }
 
-    public void ThemedExercise()
+    public void BackToMainMenu()
     {
-        Debug.Log("Count Exercise");
-        FindObjectOfType<Scenemanager>().SelectLoadingScene("PoseExamplesModified");
+        Debug.Log("Back to main menu");
+        FindObjectOfType<Scenemanager>().SelectLoadingScene("MainMenuScene");
     }
 }

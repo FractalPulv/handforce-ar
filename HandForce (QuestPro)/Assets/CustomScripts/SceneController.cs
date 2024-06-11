@@ -4,30 +4,29 @@ using UnityEngine;
 
 public class SceneController : MonoBehaviour
 {
-    public string sceneName; // Name of the scene
-    public GameObject initialObject; // The main object to activate/deactivate
+    public GameObject initialObject;
 
-    private Scenemanager sceneManager;
+    private Scenemanager scenemanager;
 
     void Awake()
     {
-        sceneManager = FindObjectOfType<Scenemanager>();
+        scenemanager = FindObjectOfType<Scenemanager>();
     }
 
     public void ChangeScene(string newScene)
     {
-        sceneManager.SelectLoadingScene(newScene);
+        scenemanager.SelectLoadingScene(newScene);
     }
 
     public void ActivateScene()
     {
-        Debug.Log("Starting scene: " + sceneName);
+        Debug.Log("Starting scene");
         initialObject.SetActive(true);
     }
 
     public void DeactivateScene()
     {
-        Debug.Log("Stopping scene: " + sceneName);
+        Debug.Log("Stopping scene");
         initialObject.SetActive(false);
     }
 }

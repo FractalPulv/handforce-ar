@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuSceneSelector : MonoBehaviour
 {
-    public void ExercisesMenu()
+    public void StartExercisesMenu()
     {
-        Debug.Log("Exercises menu");
+        Debug.Log("Starting exercises menu");
         FindObjectOfType<Scenemanager>().SelectLoadingScene("ExercisesMenu");
+    }
+
+    public void ExitApplication()
+    {
+        Debug.Log("Exiting application");
+        Application.Quit();
     }
 }

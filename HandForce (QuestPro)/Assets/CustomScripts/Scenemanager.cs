@@ -5,48 +5,44 @@ using UnityEngine.SceneManagement;
 
 public class Scenemanager : MonoBehaviour
 {
-    public string[] sceneList = new string[4]; // List of scenes to be managed
-    private SceneController[] sceneObjectList;
-    private string activeScene = "";
+    public string[] sceneList = new string[2];
+    SceneController[] sceneObjectList = new SceneController[4];
+    string activeScene = "";
 
+    // Start is called before the first frame update
     void Start()
     {
-        // Load all scenes additively at the start
         Debug.Log("Starting main menu");
         foreach (string scene in sceneList)
         {
             SceneManager.LoadScene(scene, LoadSceneMode.Additive);
         }
-
-        // Initialize scene objects list
-        StartCoroutine(InitializeSceneObjects());
     }
 
-    IEnumerator InitializeSceneObjects()
+    void Update()
     {
-        yield return new WaitForSeconds(1); // Wait for the scenes to load
+
+    }
+
+    public void InitializeSceneObjects()
+    {
         sceneObjectList = FindObjectsOfType<SceneController>();
         SelectLoadingScene("MainMenuScene");
     }
 
     public void SelectLoadingScene(string scene)
     {
-        foreach (var controller in sceneObjectList)
+        for (int i = 0; i < sceneList.Length; i++)
         {
-            if (controller.sceneName == scene)
+            if (sceneList[i] == scene)
             {
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(scene));
-                controller.ActivateScene();
+                sceneObjectList[i].ActivateScene();
             }
             else
             {
-                controller.DeactivateScene();
+                sceneObjectList[i].DeactivateScene();
             }
         }
-    }
-
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 }
