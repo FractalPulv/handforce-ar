@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 
+[System.Serializable]
 public class CounterScript : MonoBehaviour
 {
     public int count = 0;

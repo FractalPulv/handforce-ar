@@ -1,61 +1,47 @@
-// WebSocket client
-var URL = window.location.hostname + ":";
-var WebSocketType = "ws";
-var refreshCheck = false;
+// scripts.js
+document.addEventListener('DOMContentLoaded', () => {
+    const ws = new WebSocket('ws://your_websocket_server');
+    const userSelect = document.getElementsByName('user');
+    const manualDiffInput = document.getElementById('manual-diff');
+    const exercises = document.querySelectorAll('.exercise');
+    let selectedExercise = 1;
 
-if (window.location.protocol === "https:") {
-    WebSocketType = "wss";
-    URL = URL + window.location.port;
-} else {
-    var port = parseInt(window.location.port, 10) + 1;
-    URL = URL + port;
-}
+    console.log("Document loaded and event listeners attached.");
 
-console.log(URL);
+    userSelect.forEach(user => {
+        user.addEventListener('change', (event) => {
+            const selectedUser = event.target.value;
+            console.log(`User changed to: ${selectedUser}`);
+            ws.send(JSON.stringify({ type: 'userChange', user: selectedUser }));
+        });
+    });
 
-var socket;
-function websocket_connect() {
-    console.log("Trying to connect to WebSocket at " + WebSocketType + "://" + URL + "/ws");
+    manualDiffInput.addEventListener('input', (event) => {
+        const manualDiff = event.target.value;
+        console.log(`Manual difficulty changed to: ${manualDiff}`);
+        ws.send(JSON.stringify({ type: 'manualDifficultyChange', difficulty: manualDiff }));
+    });
 
-    socket = new WebSocket(WebSocketType + "://" + URL + "/ws");
 
-    socket.onmessage = function(event) {
-        console.log('Received WebSocket message:', event.data);
-        var data = JSON.parse(event.data);
-        document.getElementById("score" + data.type).innerText = "Score " + data.type + ": " + data.count;
-    };
+    exercises.forEach(exercise => {
+        exercise.addEventListener('click', () => {
+            const exerciseId = exercise.id.split('-')[1];
+            selectedExercise = exerciseId;
+            exercises.forEach(ex => ex.classList.remove('active'));
+            exercise.classList.add('active');
+            console.log(`Exercise ${exerciseId} selected.`);
+            ws.send(JSON.stringify({ type: 'exerciseChange', exercise: exerciseId }));
+        });
+    });
 
-    socket.onopen = function(event) {
-        console.log("WebSocket connection established");
-        if (refreshCheck) {
-            console.log("Refreshing");
-            location.reload();
+    // WebSocket message handling
+    ws.onmessage = (message) => {
+        const data = JSON.parse(message.data);
+        console.log("WebSocket message received:", data);
+        if (data.type === 'statsUpdate') {
+            updateSpiderGraph(data.stats);
         }
-        refreshCheck = false; // Reset refresh check on successful connection
     };
+});
 
-    socket.onclose = function(event) {
-        console.log("WebSocket connection closed");
-        setTimeout(websocket_connect, 500); // Retry connection every 2 seconds
-        refreshCheck = true;
-    };
-
-    socket.onerror = function(error) {
-        console.error("WebSocket error:", error);
-    };
-}
-
-// Initial WebSocket connection attempt
-websocket_connect();
-
-
-// document.getElementById('sendRequestButton').addEventListener('click', function() {
-//     // Replace with your target URL
-//     const url = window.location.protocol+'//'+window.location.hostname+":"+window.location.port+'/increment';
-//     fetch(url, {
-//         method: 'GET', 
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     })
-// });
+2
