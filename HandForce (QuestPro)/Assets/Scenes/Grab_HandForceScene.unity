@@ -2921,7 +2921,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f4bd8f36bd4754f8dadf0c523fbccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Grab_HandForceScene
   initialObject: {fileID: 808732736}
 --- !u!1 &836244527
 GameObject:
@@ -6939,7 +6938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3642352042163518208, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7215171682644439250, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: _enablePhysicsCapsules
