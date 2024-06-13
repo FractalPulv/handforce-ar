@@ -49,6 +49,20 @@ body {
     margin: 0;
 }
 
+#exercise-stats {
+    margin-bottom: 20px;
+    transition: height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+    overflow: hidden; /* Ensure smooth animation */
+    opacity: 1; /* Start with full opacity */
+    height: auto;
+}
+
+#exercise-stats.collapsed {
+    height: 0; /* Adjust height when collapsed */
+    padding: 0; /* Remove padding when collapsed */
+    opacity: 0; /* Make it fully transparent when collapsed */
+}
+
 #user-select li {
     margin: 10px 0;
 }

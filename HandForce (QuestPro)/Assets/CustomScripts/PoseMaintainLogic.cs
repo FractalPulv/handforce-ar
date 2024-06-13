@@ -112,11 +112,11 @@ public class PoseMaintainLogic : MonoBehaviour
         {
             _counter6.Increment();
             _httpServer.SendUpdate(_counter6);
-            _counter1.count = 0;
-            _counter2.count = 0;
-            _counter3.count = 0;
-            _counter4.count = 0;
-            _counter5.count = 0;
+            _counter1.count_change(0);
+            _counter2.count_change(0);
+            _counter3.count_change(0);
+            _counter4.count_change(0);
+            _counter5.count_change(0);
             _httpServer.SendUpdate(_counter1);
             _httpServer.SendUpdate(_counter2);
             _httpServer.SendUpdate(_counter3);

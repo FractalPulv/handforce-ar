@@ -21,6 +21,16 @@ public class CounterScript : MonoBehaviour
         }
     }
 
+    public void type_change(string name)
+    {
+        type = name;
+    }
+
+    public void count_change(int name)
+    {
+        count = 0;
+    }
+
     public int get_count(){
         return count;
     }
@@ -33,5 +43,10 @@ public class CounterScript : MonoBehaviour
     public void Decrement()
     {
         Count--;
+    }
+
+    public string ToJson()
+    {
+        return JsonUtility.ToJson(this);
     }
 }

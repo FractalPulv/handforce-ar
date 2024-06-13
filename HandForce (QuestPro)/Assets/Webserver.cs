@@ -46,14 +46,14 @@ public class SimpleHttpServer : MonoBehaviour
     {
         string[] htmlFileNames = {"mainMenu.html","sceneOne.html","index.html"};
         string htmlFileName = "mainMenu.html";
-        counter1.type = "1";
-        counter2.type = "2";
-        counter3.type = "3";
-        counter4.type = "4";
-        counter5.type = "5";
-        counter6.type = "completed";
-        cup_counter.type = "count";
-        cup_complete.type = "completed";
+        counter1.type_change("1");
+        counter2.type_change("2");
+        counter3.type_change("3");
+        counter4.type_change("4");
+        counter5.type_change("5");
+        counter6.type_change("completed");
+        cup_counter.type_change("count");
+        cup_complete.type_change("completed");
         
         #if UNITY_ANDROID && !UNITY_EDITOR
             htmlFilePath = Path.Combine(Application.persistentDataPath, htmlFileName);
@@ -67,7 +67,7 @@ public class SimpleHttpServer : MonoBehaviour
         #else
             htmlFilePath = Path.Combine(Application.streamingAssetsPath, htmlFileName);
             cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
-            jsFilePath = Path.Combine(Application.persistentDataPath, "index.js");
+            jsFilePath = Path.Combine(Application.streamingAssetsPath, "index.js");
         #endif
 
         // Initialize HttpListener
@@ -140,16 +140,17 @@ public class SimpleHttpServer : MonoBehaviour
         else if (context.Request.Url.AbsolutePath == "/index.js")
         {
             responseString = LoadJsFile();
-            response.ContentType = "text/js";
+            response.ContentType = "application/javascript";
         }
         else if (context.Request.Url.AbsolutePath == "/cup-content")
         {
-
+            responseString = cup_content();
+            response.ContentType = "application/json";
         }
         else if (context.Request.Url.AbsolutePath == "/pose-content")
         {
             responseString = pose_content();
-            response.ContentType = "text/json";
+            response.ContentType = "application/json";
         }
         else
         {
@@ -238,8 +239,8 @@ public class SimpleHttpServer : MonoBehaviour
             }
             else
             {
-                Debug.LogError("CSS file not found at path: " + jsFilePath);
-                return "/* 404 - CSS File Not Found */";
+                Debug.LogError("ja file not found at path: " + jsFilePath);
+                return "/* 404 - js File Not Found */";
             }
         }
         catch (Exception e)
@@ -251,23 +252,27 @@ public class SimpleHttpServer : MonoBehaviour
 
     private string cup_content()
     {
-        string message = "{";
-        CounterScript[] counters = {cup_complete,cup_counter};
-        foreach (CounterScript counter in counters){
-            message = message + JsonUtility.ToJson(counter);
-        }
-        return message + "}";
+        string[] counters = {cup_complete.ToJson(),cup_counter.ToJson()};
+        return ArrayOfJsonStringsToJson(counters);
     }
 
     private string pose_content()
     {
-        string message = "{";
-        CounterScript[] counters = {counter1,counter2,counter3,counter4,counter5,counter6};
-        foreach (CounterScript counter in counters){
-            message = message + JsonUtility.ToJson(counter);
-        }
-        return message + "}";
+        // string message = "{";
+        string[] counters = new string[6];
+        counters[0] = counter1.ToJson();
+        counters[1] = counter2.ToJson();
+        counters[2] = counter3.ToJson();
+        counters[3] = counter4.ToJson();
+        counters[4] = counter5.ToJson();
+        counters[5] = counter6.ToJson();
+        // foreach (CounterScript counter in counters){
+        Debug.Log(counter1.ToJson());
+            return ArrayOfJsonStringsToJson(counters);
+        // }
+        // return message + "}";
     }
+
 
     private string InjectVariables(string html)
     {
@@ -335,5 +340,36 @@ public class SimpleHttpServer : MonoBehaviour
         {
             wsServer.Stop();
         }
+    }
+
+    // Convert array of JSON strings to a large JSON
+    string ArrayOfJsonStringsToJson(string[] jsonStrings)
+    {
+        // Create an array of objects
+        MyData[] dataArray = new MyData[jsonStrings.Length];
+        for (int i = 0; i < jsonStrings.Length; i++)
+        {
+            dataArray[i] = JsonUtility.FromJson<MyData>(jsonStrings[i]);
+
+        }
+
+        // Convert array of objects to a JSON string
+        Wrapper<MyData> wrapper = new Wrapper<MyData>();
+        wrapper.array = dataArray;
+        return JsonUtility.ToJson(wrapper);
+    }
+
+    // Wrapper class
+    [System.Serializable]
+    private class Wrapper<T>
+    {
+        public T[] array;
+    }
+
+    [System.Serializable]
+    public class MyData
+    {
+        public string type;
+        public int count;
     }
 }
