@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1116,6 +1116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bce781f8f9ba32eeb68de47d72e135b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cup_counter: {fileID: 0}
+  cup_complete: {fileID: 0}
   counter1: {fileID: 751948496}
   counter2: {fileID: 924471380}
   counter3: {fileID: 924471380}
@@ -2696,7 +2698,7 @@ PrefabInstance:
       objectReference: {fileID: 808732739}
     - target: {fileID: 4114382283797518650, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeScene
+      value: LoadNewScene
       objectReference: {fileID: 0}
     - target: {fileID: 4114382283797518650, guid: 9fa307f5b777a3144a94cb355e43bf43, type: 3}
       propertyPath: _whenRelease.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2921,7 +2923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f4bd8f36bd4754f8dadf0c523fbccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialObject: {fileID: 808732736}
 --- !u!1 &836244527
 GameObject:
   m_ObjectHideFlags: 0
@@ -6938,7 +6939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3642352042163518208, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7215171682644439250, guid: f54012181eacade4ea242c65f804720f, type: 3}
       propertyPath: _enablePhysicsCapsules

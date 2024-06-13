@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsSceneName: SettingsScene
+  currentSceneName: 
 --- !u!1 &471438024 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2483171112401766338, guid: f54012181eacade4ea242c65f804720f, type: 3}
@@ -545,7 +546,7 @@ GameObject:
   - component: {fileID: 702870323}
   - component: {fileID: 702870322}
   m_Layer: 5
-  m_Name: ExerciseOneButton
+  m_Name: CupExerciseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -615,9 +616,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1308140893}
+      - m_Target: {fileID: 954434007}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: LoadNewScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -625,18 +626,6 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Grab_HandForceScene
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 954433996}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &702870323
@@ -690,7 +679,7 @@ GameObject:
   - component: {fileID: 869170977}
   - component: {fileID: 869170976}
   m_Layer: 5
-  m_Name: ExerciseTwoButton
+  m_Name: PosesExerciseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -760,9 +749,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1308140893}
+      - m_Target: {fileID: 954434007}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: LoadNewScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -770,18 +759,6 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: PoseExamplesModified
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 954433996}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &869170977
@@ -900,6 +877,7 @@ GameObject:
   - component: {fileID: 954434002}
   - component: {fileID: 954434005}
   - component: {fileID: 954434006}
+  - component: {fileID: 954434007}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1188,6 +1166,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   reference: {fileID: 0}
   cameraReference: 1
+--- !u!114 &954434007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954433996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f4bd8f36bd4754f8dadf0c523fbccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1210553410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1403,51 +1393,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1296543733}
   m_CullTransparentMesh: 1
---- !u!1 &1308140892
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1308140894}
-  - component: {fileID: 1308140893}
-  m_Layer: 0
-  m_Name: SceneContoller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1308140893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308140892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f4bd8f36bd4754f8dadf0c523fbccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialObject: {fileID: 954433996}
---- !u!4 &1308140894
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308140892}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.067204565, y: 1.2284856, z: 0.36864918}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1458761896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,9 +1476,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1308140893}
+      - m_Target: {fileID: 954434007}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: LoadNewScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1541,18 +1486,6 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: MainMenuScene
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 954433996}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1458761899
@@ -1964,4 +1897,3 @@ SceneRoots:
   - {fileID: 954434000}
   - {fileID: 932792816}
   - {fileID: 2058789825}
-  - {fileID: 1308140894}

@@ -2,31 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 public class SceneController : MonoBehaviour
 {
-    public GameObject initialObject;
-
-    private Scenemanager scenemanager;
-
-    void Awake()
+    public void LoadNewScene(string sceneName)
     {
-        scenemanager = FindObjectOfType<Scenemanager>();
+        // Load new scene in single mode, then reload HttpServerScene additively
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        SceneManager.LoadScene("SettingsScene", LoadSceneMode.Additive);
     }
 
-    public void ChangeScene(string newScene)
+    public void UnloadCurrentScene()
     {
-        scenemanager.SelectLoadingScene(newScene);
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.UnloadSceneAsync(currentScene);
     }
 
-    public void ActivateScene()
+    public void QuitGame()
     {
-        Debug.Log("Starting scene");
-        initialObject.SetActive(true);
-    }
-
-    public void DeactivateScene()
-    {
-        Debug.Log("Stopping scene");
-        initialObject.SetActive(false);
+        //UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
     }
 }
+
