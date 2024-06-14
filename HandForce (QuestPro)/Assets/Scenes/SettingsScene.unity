@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &93867493
 Transform:
   m_ObjectHideFlags: 0
@@ -176,7 +176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 329118016}
-  - component: {fileID: 329118015}
+  - component: {fileID: 329118017}
   m_Layer: 0
   m_Name: Counter1
   m_TagString: Untagged
@@ -184,20 +184,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &329118015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 329118014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86bee9bdf51f56da8939eb62d15d3a11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  count: 0
-  type: Default
 --- !u!4 &329118016
 Transform:
   m_ObjectHideFlags: 0
@@ -213,6 +199,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 601532265}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &329118017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329118014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86bee9bdf51f56da8939eb62d15d3a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  count: 0
+  type: Default
 --- !u!1 &470906797
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &601532264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,12 +336,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cup_counter: {fileID: 1591362411}
   cup_complete: {fileID: 1239546341}
-  counter1: {fileID: 329118015}
+  counter1: {fileID: 329118017}
   counter2: {fileID: 1652676141}
   counter3: {fileID: 470906798}
   counter4: {fileID: 1778783254}
   counter5: {fileID: 517862933}
   counter6: {fileID: 1003009232}
+  CounterList_cup: []
+  CounterList_pose: []
   username: Player
   authUsername: admin
   authPassword: password

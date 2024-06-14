@@ -25,7 +25,8 @@ public class SimpleHttpServer : MonoBehaviour
 
     public CounterScript cup_counter;
     public CounterScript cup_complete;
-
+    
+    public static SimpleHttpServer Instance { get; private set; }
 
     public CounterScript counter1;
     public CounterScript counter2;
@@ -34,13 +35,30 @@ public class SimpleHttpServer : MonoBehaviour
     public CounterScript counter5;
     public CounterScript counter6;
 
+    public List<CounterScript> CounterList_cup;
+    public List<CounterScript> CounterList_pose;
     // Variables to be injected into the HTML file
     public string username = "Player";
 
     public string authUsername = "admin";
     public string authPassword = "password";
 
+    public string currentScene = "Unknown";
+
     public int Scene = 0;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -54,6 +72,17 @@ public class SimpleHttpServer : MonoBehaviour
         counter6.type_change("completed");
         cup_counter.type_change("count");
         cup_complete.type_change("completed");
+
+        CounterList_pose.Add(counter1);
+        CounterList_pose.Add(counter2);
+        CounterList_pose.Add(counter3);
+        CounterList_pose.Add(counter4);
+        CounterList_pose.Add(counter5);
+        CounterList_pose.Add(counter6);
+
+        CounterList_cup.Add(cup_counter);
+        CounterList_cup.Add(cup_complete);
+        
         
         #if UNITY_ANDROID && !UNITY_EDITOR
             htmlFilePath = Path.Combine(Application.persistentDataPath, htmlFileName);
@@ -150,6 +179,11 @@ public class SimpleHttpServer : MonoBehaviour
         else if (context.Request.Url.AbsolutePath == "/pose-content")
         {
             responseString = pose_content();
+            response.ContentType = "application/json";
+        }
+        else if (context.Request.Url.AbsolutePath == "/current-exercise")
+        {
+            responseString = current_exercise();
             response.ContentType = "application/json";
         }
         else
@@ -273,6 +307,13 @@ public class SimpleHttpServer : MonoBehaviour
         // return message + "}";
     }
 
+    public string current_exercise()
+    {
+        string WS_response = "{\"type\":\"exercise\",\"value\":\""+currentScene+"\"}";
+        SendUpdateString(WS_response);
+        return WS_response;
+    }
+
 
     private string InjectVariables(string html)
     {
@@ -321,6 +362,14 @@ public class SimpleHttpServer : MonoBehaviour
         foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)
         {
             session.Context.WebSocket.Send(updateMessage);
+        }
+    }
+
+    public void SendUpdateString(string text)
+    {
+        foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)
+        {
+            session.Context.WebSocket.Send(text);
         }
     }
 

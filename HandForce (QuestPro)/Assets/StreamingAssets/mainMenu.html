@@ -10,7 +10,8 @@
     <div id="container">
         <div id="user-select" class="collapsible">
             <ul>
-                <li><input type="radio" name="user" value="1" checked> User 1 </li>
+                <li><input type="radio" name="user" value="1" checked id="radio1"> User 1 
+                <span class="subtitle" id="current_exercise">Last seen: </span></li>
                 <li><input type="radio" name="user" value="2"> User 2 </li>
                 <li><input type="radio" name="user" value="3"> User 3 </li>
                 <li><input type="radio" name="user" value="4"> User 4 </li>
@@ -29,11 +30,13 @@
                 <h3>Select exercise to view stats</h3>
                 <div class="exercise" id="exercise-1" data-difficulty="8">
                     <p>Cup</p>
-                    <p>Difficulty: 8</p>
+                    <p class="hidden" id="cup_live">Live</p>
+                    <p class="hidden" id="cup_unavailable">Unavailable</p>
                 </div>
                 <div class="exercise" id="exercise-2" data-difficulty="6">
                     <p>Poses</p>
-                    <p>Difficulty: 6</p>
+                    <p class="hidden" id="pose_live">Live</p>
+                    <p class="hidden" id="pose_unavailable">Unavailable</p>
                 </div>
             </div>
         </div>

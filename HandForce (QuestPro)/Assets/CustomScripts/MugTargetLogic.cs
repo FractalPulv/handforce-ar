@@ -11,9 +11,6 @@ public class MugTargetLogic : MonoBehaviour
     [SerializeField] ParticleSystem finalSuccessParticles; // Particle system for final success feedback
     [SerializeField] TextMeshProUGUI counterText; // TextMeshPro field for displaying the counter
     [SerializeField] float resetSpeed = 2f; // Speed at which the mug moves to the initial position
-    public CounterScript WebserverCounter;
-    public CounterScript WebserverCounterCompleted;
-    public SimpleHttpServer Webserver;
     private Vector3 mugInitialPosition; // Initial position of the mug
     private Quaternion mugInitialRotation; // Initial rotation of the mug
     private bool isResetting = false;
@@ -21,6 +18,10 @@ public class MugTargetLogic : MonoBehaviour
 
     void Start()
     {
+        SimpleHttpServer.Instance.CounterList_cup[0].count_change(0);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_cup[0]);
+        SimpleHttpServer.Instance.currentScene = "Cup Exercise";
+        SimpleHttpServer.Instance.current_exercise();
         // Save the initial position and rotation of the mug
         if (mugPrefab != null)
         {
@@ -72,15 +73,22 @@ public class MugTargetLogic : MonoBehaviour
             mugRigidbody = rb;
             currentCount++;
             // Increase the count
-            WebserverCounter.Increment();
-            Webserver.SendUpdate(WebserverCounter);
+            // WebserverCounter.Increment();
+            // Webserver.SendUpdate(WebserverCounter);
+            SimpleHttpServer.Instance.CounterList_cup[0].Increment();
+            SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_cup[0]);
             UpdateCounterText();
             // Update counter text
 
             if (currentCount >= targetCount)
             {
-                WebserverCounterCompleted.Increment();
-                Webserver.SendUpdate(WebserverCounterCompleted);
+                // WebserverCounterCompleted.Increment();
+                // Webserver.SendUpdate(WebserverCounterCompleted);
+                SimpleHttpServer.Instance.CounterList_cup[0].count_change(0);
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_cup[0]);
+                SimpleHttpServer.Instance.CounterList_cup[1].Increment();
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_cup[1]);
+                currentCount = 0;
                 FinalSuccess(); // Show final success particles
             }
             else

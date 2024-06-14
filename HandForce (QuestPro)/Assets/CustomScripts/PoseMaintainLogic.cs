@@ -21,20 +21,6 @@ public class PoseMaintainLogic : MonoBehaviour
     private Image _progressIndicator;
 
 
-    [SerializeField]
-    private CounterScript _counter1;
-    [SerializeField]
-    private CounterScript _counter2;
-    [SerializeField]
-    private CounterScript _counter3;
-    [SerializeField]
-    private CounterScript _counter4;
-    [SerializeField]
-    private CounterScript _counter5;
-    [SerializeField]
-    private CounterScript _counter6;
-    [SerializeField]
-    private SimpleHttpServer _httpServer;
 
     private const float requiredHoldTime = 3f;
     private float holdTimer = 0f;
@@ -62,6 +48,13 @@ public class PoseMaintainLogic : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        ResetCounters();
+        SimpleHttpServer.Instance.currentScene = "Pose Exercise";
+        SimpleHttpServer.Instance.current_exercise();
+    }
+
     public void OnPoseDetected(string pose)
     {
         isPoseHeld = true;
@@ -75,6 +68,8 @@ public class PoseMaintainLogic : MonoBehaviour
 
     private void PoseHeldComplete()
     {
+
+
         isPoseHeld = false;
         _progressIndicator.fillAmount = 1f;
         completedPoses.Add(currentPose);
@@ -82,48 +77,62 @@ public class PoseMaintainLogic : MonoBehaviour
         switch (currentPose)
         {
             case "Sign 1":
-                _counter1.Increment();
-                _httpServer.SendUpdate(_counter1);
+                //_counter1.Increment();
+                //_httpServer.SendUpdate(_counter1);
                 _label1.color = Color.blue;
+                SimpleHttpServer.Instance.CounterList_pose[0].Increment();
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[0]);
                 break;
             case "Sign 2":
-                _counter2.Increment();
-                _httpServer.SendUpdate(_counter2);
+                //_counter2.Increment();
+                //_httpServer.SendUpdate(_counter2);
                 _label2.color = Color.blue;
+                SimpleHttpServer.Instance.CounterList_pose[1].Increment();
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[1]);
                 break;
             case "Sign 3":
-                _counter3.Increment();
-                _httpServer.SendUpdate(_counter3);
+                //_counter3.Increment();
+                //_httpServer.SendUpdate(_counter3);
                 _label3.color = Color.blue;
+                SimpleHttpServer.Instance.CounterList_pose[2].Increment();
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[2]);
                 break;
             case "Sign 4":
-                _counter4.Increment();
-                _httpServer.SendUpdate(_counter4);
+                //_counter4.Increment();
+                //_httpServer.SendUpdate(_counter4);
                 _label4.color = Color.blue;
+                SimpleHttpServer.Instance.CounterList_pose[3].Increment();
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[3]);
                 break;
             case "Sign 5":
-                _counter5.Increment();
-                _httpServer.SendUpdate(_counter5);
+                //_counter5.Increment();
+                //_httpServer.SendUpdate(_counter5);
                 _label5.color = Color.blue;
+                SimpleHttpServer.Instance.CounterList_pose[4].Increment();
+                SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
                 break;
         }
 
         if (completedPoses.Count == 5)
         {
-            _counter6.Increment();
-            _httpServer.SendUpdate(_counter6);
-            _counter1.count_change(0);
-            _counter2.count_change(0);
-            _counter3.count_change(0);
-            _counter4.count_change(0);
-            _counter5.count_change(0);
-            _httpServer.SendUpdate(_counter1);
-            _httpServer.SendUpdate(_counter2);
-            _httpServer.SendUpdate(_counter3);
-            _httpServer.SendUpdate(_counter4);
-            _httpServer.SendUpdate(_counter5);
+            ResetCounters();
             ResetColors();
         }
+    }
+
+    private void ResetCounters(){
+        SimpleHttpServer.Instance.CounterList_pose[5].Increment();
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[5]);
+        SimpleHttpServer.Instance.CounterList_pose[0].count_change(0);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.CounterList_pose[1].count_change(0);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.CounterList_pose[2].count_change(0);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.CounterList_pose[3].count_change(0);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.CounterList_pose[4].count_change(0);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
     }
 
     private void ResetColors()

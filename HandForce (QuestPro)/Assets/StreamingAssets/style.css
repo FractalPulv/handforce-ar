@@ -91,6 +91,21 @@ body {
     overflow: hidden;
 }
 
+.hidden {
+    color: lightgreen;
+    visibility: hidden;
+}
+
+.visible {
+    color: green;
+    visibility: visible;
+}
+
+.unavailable {
+    color: red;
+    visibility: visible;
+}
+
 .stats-labels {
     display: flex;
     justify-content: space-between;
@@ -121,6 +136,11 @@ body {
     position: absolute;
     bottom: 20px;
     right: 20px;
+}
+
+.subtitle {
+    font-size: 0.8em;
+    color: gray;
 }
 
 .notif-btn, .chat-btn, .help-btn {

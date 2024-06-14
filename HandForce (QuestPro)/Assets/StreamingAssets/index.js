@@ -1,8 +1,11 @@
 // scripts.js
+let last_json = "";
+let follow_current = true;
 document.addEventListener('DOMContentLoaded', () => {
     // WebSocket client
     var URL = window.location.hostname + ":";
     var WebSocketType = "ws";
+    var refreshCheck = false;
 
     if (window.location.protocol === "https:") {
         WebSocketType = "wss";
@@ -20,24 +23,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
         socket = new WebSocket(WebSocketType + "://" + URL + "/ws");
         const chatBtn = document.getElementById('chat-btn');
-        socket.onmessage = function(event) {
+        socket.onmessage = function (event) {
+
             console.log('Received WebSocket message:', event.data);
             var data = JSON.parse(event.data);
-            document.getElementById("exercise-stats").append = "Score " + data.type + ": " + data.count;
+            if (data.type === "exercise") {
+                const cupDiv = document.getElementById(`cup_live`);
+                const poseDiv = document.getElementById(`pose_live`);
+                if (data.value === "Cup Exercise") {
+                    cupDiv.className = "visible";
+                    poseDiv.className = "hidden";
+                    if (follow_current) {
+                        load_cup();
+                    }
+                }
+                else if (data.value === "Pose Exercise") {
+                    cupDiv.className = "hidden";
+                    poseDiv.className = "visible";
+                    if (follow_current) {
+                        load_poses();
+                    }
+                }
+                else {
+                    cupDiv.className = "hidden";
+                    poseDiv.className = "hidden";
+                }
+                UpdateCurrentExercise(data, "Currently In");
+            }
+            var type = data.type;
+            var p = document.createElement("p");
+            p.textContent = `score ${data.type}: ${data.count}`;
+            p.id = `type-${type}`;
+            document.getElementById(`type-${type}`).replaceWith(p);
         };
 
-        socket.onopen = function(event) {
+        socket.onopen = function (event) {
             console.log("WebSocket connection established");
-            
+            const cupDiv = document.getElementById(`cup_unavailable`);
+            const poseDiv = document.getElementById(`pose_unavailable`);
+            cupDiv.className = "hidden";
+            poseDiv.className = "hidden";
             chatBtn.style.backgroundColor = 'green';
+            if (refreshCheck) {
+                console.log("Refreshing");
+                clearTimeout(websocket_connect);
+            }
+            refreshCheck = false; // Reset refresh check on successful connection
         };
 
-        socket.onclose = function(event) {
+        socket.onclose = function (event) {
             console.log("WebSocket connection closed");
             chatBtn.style.backgroundColor = 'red';
+            setTimeout(websocket_connect, 500); // Retry connection every 2 seconds
+            refreshCheck = true;
+            const cupDiv = document.getElementById(`cup_live`);
+            const poseDiv = document.getElementById(`pose_live`);
+            cupDiv.className = "hidden";
+            poseDiv.className = "hidden";
+            UpdateCurrentExercise(last_json, "Last Seen");
         };
 
-        socket.onerror = function(error) {
+        socket.onerror = function (error) {
             console.error("WebSocket error:", error);
         };
     }
@@ -56,14 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
         user.addEventListener('change', (event) => {
             const selectedUser = event.target.value;
             console.log(`User changed to: ${selectedUser}`);
-            ws.send(JSON.stringify({ type: 'userChange', user: selectedUser }));
+            if (selectedUser != 1){
+                alert(`Error: Selected user: \'${selectedUser}\' not found!`);
+                document.getElementById("radio1").checked = true;
+            }
+            socket.send(JSON.stringify({ type: 'userChange', user: selectedUser }));
         });
     });
 
     manualDiffInput.addEventListener('input', (event) => {
         const manualDiff = event.target.value;
         console.log(`Manual difficulty changed to: ${manualDiff}`);
-        ws.send(JSON.stringify({ type: 'manualDifficultyChange', difficulty: manualDiff }));
+        socket.send(JSON.stringify({ type: 'manualDifficultyChange', difficulty: manualDiff }));
     });
 
 
@@ -74,75 +124,78 @@ document.addEventListener('DOMContentLoaded', () => {
             exercises.forEach(ex => ex.classList.remove('active'));
             exercise.classList.add('active');
             console.log(`Exercise ${exerciseId} selected.`);
-            if (exerciseId == 1){
+            follow_current = false;
+            if (exerciseId == 1) {
                 load_cup();
             }
-            else if (exerciseId == 2){
+            else if (exerciseId == 2) {
                 load_poses();
             }
-            ws.send(JSON.stringify({ type: 'exerciseChange', exercise: exerciseId }));
+            socket.send(JSON.stringify({ type: 'exerciseChange', exercise: exerciseId }));
         });
     });
-
-    // // WebSocket message handling
-    // ws.onmessage = (message) => {
-    //     const data = JSON.parse(message.data);
-    //     console.log("WebSocket message received:", data);
-    //     if (data.type === 'statsUpdate') {
-    //         updateSpiderGraph(data.stats);
-    //     }
-    // };
-
-    function load_poses() {
-        const exerciseStatsDiv = document.getElementById('exercise-stats');
-        fetch('/pose-content')
-        .then(response => response.json())
-        .then(data => {
-            // //var data = JSON.parse(data);
-            // console.log(data);
-            // data.array.forEach(item => {
-            //     console.log(item);
-            //     const p = document.createElement('p');
-        
-            //     // Set the content of the paragraph to the desired format
-            //     p.textContent = `score ${item.type}: ${item.count}`;
-                
-            //     // Append the paragraph to the exercise-stats div
-            //     exerciseStatsDiv.appendChild(p);
-            // })
-            // console.log(data);
-            updateExerciseStats(data,'<h1> Stats for pose exercise</h1>');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-    function load_cup() {
-        const exerciseStatsDiv = document.getElementById('exercise-stats');
-        fetch('/cup-content')
-        .then(response => response.json())
-        .then(data => {
-            //var data = JSON.parse(data);
-            console.log(data);
-            // data.array.forEach(item => {
-            //     console.log(item);
-            //     const p = document.createElement('p');
-        
-            //     // Set the content of the paragraph to the desired format
-            //     p.textContent = `score ${item.type}: ${item.count}`;
-                
-            //     // Append the paragraph to the exercise-stats div
-            //     exerciseStatsDiv.appendChild(p);
-            // })
-            // console.log(data);
-            updateExerciseStats(data,'<h1> Stats for cup exercise</h1>');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
+    load_exercise();
 });
+
+function load_poses() {
+    const poseDiv = document.getElementById(`pose_unavailable`);
+    fetch('/pose-content')
+        .then(response => response.json())
+        .then(data => {
+            poseDiv.className = "hidden";
+            updateExerciseStats(data, '<h1> Stats for pose exercise</h1>');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            poseDiv.className = "unavailable";
+        });
+}
+
+function load_cup() {
+    const cupDiv = document.getElementById(`cup_unavailable`);
+    fetch('/cup-content')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            cupDiv.className = "hidden";
+            updateExerciseStats(data, '<h1> Stats for cup exercise</h1>');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            cupDiv.className = "unavailable";
+        });
+}
+
+function load_exercise() {
+    fetch('/current-exercise')
+        .then(response => response.json())
+        .then(data => {
+            UpdateCurrentExercise(data, "Last Seen");
+            if (data.value === "Cup Exercise") {
+                if (follow_current) {
+                    load_cup();
+                }
+            }
+            else if (data.value === "Pose Exercise") {
+                if (follow_current) {
+                    load_poses();
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function UpdateCurrentExercise(jsonData, text) {
+    last_json = jsonData;
+    const currentExerciseDiv = document.getElementById(`current_exercise`);
+    const span = document.createElement('span');
+    span.id = `current_exercise`;
+    span.className = "subtitle";
+    span.textContent = `${text}: ${jsonData.value}`;
+    currentExerciseDiv.replaceWith(span);
+}
 
 function updateExerciseStats(jsonData, text) {
     const exerciseStatsDiv = document.getElementById('exercise-stats');
@@ -153,30 +206,32 @@ function updateExerciseStats(jsonData, text) {
     tempDiv.style.visibility = 'hidden';
     tempDiv.style.height = 'auto';
     tempDiv.style.width = exerciseStatsDiv.clientWidth + 'px';
-    
+
     // Append the content to the temporary div
     tempDiv.innerHTML = text;
     jsonData.array.forEach(item => {
         const p = document.createElement('p');
+        p.id = `${item.type}`;
         p.textContent = `score ${item.type}: ${item.count}`;
         tempDiv.appendChild(p);
     });
     document.body.appendChild(tempDiv);
-    
+
     // Get the calculated height
     const newHeight = tempDiv.clientHeight;
     document.body.removeChild(tempDiv);
-    
+
     // Set the initial height to the current height
     exerciseStatsDiv.style.height = exerciseStatsDiv.clientHeight + 'px';
-    
+
     // Force a reflow to apply the current height
     exerciseStatsDiv.offsetHeight;
-    
+
     // Update the content
     exerciseStatsDiv.innerHTML = text;
     jsonData.array.forEach(item => {
         const p = document.createElement('p');
+        p.id = `type-${item.type}`;
         p.textContent = `score ${item.type}: ${item.count}`;
         exerciseStatsDiv.appendChild(p);
     });
