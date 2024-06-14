@@ -2,14 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Handforce excersise website</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="index.js"></script> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1> User is Choosing an excersise</h1>
+    <div id="container">
+        <div id="user-select" class="collapsible">
+            <ul>
+                <li><input type="radio" name="user" value="1" checked id="radio1"> User 1 
+                <span class="subtitle" id="current_exercise">Last seen: </span></li>
+                <li><input type="radio" name="user" value="2"> User 2 </li>
+                <li><input type="radio" name="user" value="3"> User 3 </li>
+                <li><input type="radio" name="user" value="4"> User 4 </li>
+                <li><input type="radio" name="user" value="5"> User 5 </li>
+            </ul>
+        </div>
+        <div id="main-content">
+            <div id="difficulty" class="collapsible">
+                <label><input type="radio" name="difficulty" value="auto" checked> Automatic: <span id="auto-diff">6</span></label>
+                <label><input type="radio" name="difficulty" value="manual"> Manual: <input type="number" id="manual-diff" value="8" min="1" max="10"></label>
+            </div>
+            <div id="exercise-stats">
+                <h1> Select an exercise below to view stats</h1>
+            </div>
+            <div id="exercises">
+                <h3>Select exercise to view stats</h3>
+                <div class="exercise" id="exercise-1" data-difficulty="8">
+                    <p>Cup</p>
+                    <p class="hidden" id="cup_live">Live</p>
+                    <p class="hidden" id="cup_unavailable">Unavailable</p>
+                </div>
+                <div class="exercise" id="exercise-2" data-difficulty="6">
+                    <p>Poses</p>
+                    <p class="hidden" id="pose_live">Live</p>
+                    <p class="hidden" id="pose_unavailable">Unavailable</p>
+                </div>
+            </div>
+        </div>
+        <div id="chat">
+            <button class="chat-btn" id="chat-btn">1</button>
+        </div>
     </div>
+    <script src="index.js"></script>
 </body>
 </html>
 

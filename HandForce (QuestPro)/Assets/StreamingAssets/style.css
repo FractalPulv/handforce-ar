@@ -1,46 +1,173 @@
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    margin: 0;
-    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+    overflow: hidden;
 }
 
-.container {
-    background-color: white;
+#container {
+    display: flex;
+    width: 90%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+#user-select, #difficulty {
+    width: 20%;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(221, 221, 221, 0.5);
+    transition: all 0.3s ease;
+}
+
+#user-select.collapsed, #difficulty.collapsed {
+    width: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
+}
+
+#user-select h3, #difficulty h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    cursor: pointer;
+}
+
+#user-select ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#exercise-stats {
+    margin-bottom: 20px;
+    transition: height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+    overflow: hidden; /* Ensure smooth animation */
+    opacity: 1; /* Start with full opacity */
+    height: auto;
+}
+
+#exercise-stats.collapsed {
+    height: 0; /* Adjust height when collapsed */
+    padding: 0; /* Remove padding when collapsed */
+    opacity: 0; /* Make it fully transparent when collapsed */
+}
+
+#user-select li {
+    margin: 10px 0;
+}
+
+.status {
+    margin-left: 10px;
+    font-size: 1.2em;
+}
+
+#main-content {
+    width: 60%;
+    padding: 20px;
+}
+
+#difficulty, #exercise-stats, #exercises {
+    margin-bottom: 20px;
+}
+
+#spider-graph-container {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.hidden {
+    color: lightgreen;
+    visibility: hidden;
+}
+
+.visible {
+    color: green;
+    visibility: visible;
+}
+
+.unavailable {
+    color: red;
+    visibility: visible;
+}
+
+.stats-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+#exercises {
+    display: flex;
+    justify-content: space-around;
+}
+
+.exercise {
+    width: 30%;
+    background: rgba(221, 221, 221, 0.7);
     text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-h1 {
-    color: #007BFF;
+.exercise:hover, .exercise.active {
+    background: rgba(187, 187, 187, 0.7);
 }
 
-p {
-    font-size: 18px;
+#notifications, #help-session, #chat {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
 
-button {
-    background-color: #007BFF;
+.subtitle {
+    font-size: 0.8em;
+    color: gray;
+}
+
+.notif-btn, .chat-btn, .help-btn {
+    background-color: red;
     color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-button:hover {
+.notif-btn:hover, .chat-btn:hover, .help-btn:hover {
+    background-color: darkred;
+}
+
+.toggle-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
     background-color: #0056b3;
-}
-
-button:active {
-    background-color: #004494;
 }

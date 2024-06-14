@@ -10,6 +10,8 @@ using WebSocketSharp.Server;
 using WebSocketSharp;
 using System.Text.RegularExpressions;
 using Unity.VisualScripting;
+using System.Collections.Generic;
+
 
 
 public class SimpleHttpServer : MonoBehaviour
@@ -21,6 +23,11 @@ public class SimpleHttpServer : MonoBehaviour
     private string jsFilePath;
     private WebSocketServer wsServer;
 
+    public CounterScript cup_counter;
+    public CounterScript cup_complete;
+    
+    public static SimpleHttpServer Instance { get; private set; }
+
     public CounterScript counter1;
     public CounterScript counter2;
     public CounterScript counter3;
@@ -28,42 +35,54 @@ public class SimpleHttpServer : MonoBehaviour
     public CounterScript counter5;
     public CounterScript counter6;
 
+    public List<CounterScript> CounterList_cup;
+    public List<CounterScript> CounterList_pose;
     // Variables to be injected into the HTML file
     public string username = "Player";
 
     public string authUsername = "admin";
     public string authPassword = "password";
 
+    public string currentScene = "Unknown";
+
     public int Scene = 0;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Start()
     {
         string[] htmlFileNames = {"mainMenu.html","sceneOne.html","index.html"};
         string htmlFileName = "mainMenu.html";
-        switch (Scene)
-        {
-            case 1:
-                htmlFileName = "sceneOne.html";
-                counter1.type = "Count";
-                counter2.type = "2";
-                counter3.type = "3";
-                counter4.type = "4";
-                counter5.type = "Completed";
-                counter6.type = "6";
-                break;
-            case 2:
-                htmlFileName = "index.html";
-                counter1.type = "1";
-                counter2.type = "2";
-                counter3.type = "3";
-                counter4.type = "4";
-                counter5.type = "5";
-                counter6.type = "completed";
-                break;
-            default:
-                break;
+        counter1.type_change("1");
+        counter2.type_change("2");
+        counter3.type_change("3");
+        counter4.type_change("4");
+        counter5.type_change("5");
+        counter6.type_change("completed");
+        cup_counter.type_change("count");
+        cup_complete.type_change("completed");
 
-        }
+        CounterList_pose.Add(counter1);
+        CounterList_pose.Add(counter2);
+        CounterList_pose.Add(counter3);
+        CounterList_pose.Add(counter4);
+        CounterList_pose.Add(counter5);
+        CounterList_pose.Add(counter6);
+
+        CounterList_cup.Add(cup_counter);
+        CounterList_cup.Add(cup_complete);
+        
         
         #if UNITY_ANDROID && !UNITY_EDITOR
             htmlFilePath = Path.Combine(Application.persistentDataPath, htmlFileName);
@@ -77,7 +96,7 @@ public class SimpleHttpServer : MonoBehaviour
         #else
             htmlFilePath = Path.Combine(Application.streamingAssetsPath, htmlFileName);
             cssFilePath = Path.Combine(Application.streamingAssetsPath, "style.css");
-            jsFilePath = Path.Combine(Application.persistentDataPath, "index.js");
+            jsFilePath = Path.Combine(Application.streamingAssetsPath, "index.js");
         #endif
 
         // Initialize HttpListener
@@ -150,7 +169,22 @@ public class SimpleHttpServer : MonoBehaviour
         else if (context.Request.Url.AbsolutePath == "/index.js")
         {
             responseString = LoadJsFile();
-            response.ContentType = "text/js";
+            response.ContentType = "application/javascript";
+        }
+        else if (context.Request.Url.AbsolutePath == "/cup-content")
+        {
+            responseString = cup_content();
+            response.ContentType = "application/json";
+        }
+        else if (context.Request.Url.AbsolutePath == "/pose-content")
+        {
+            responseString = pose_content();
+            response.ContentType = "application/json";
+        }
+        else if (context.Request.Url.AbsolutePath == "/current-exercise")
+        {
+            responseString = current_exercise();
+            response.ContentType = "application/json";
         }
         else
         {
@@ -239,8 +273,8 @@ public class SimpleHttpServer : MonoBehaviour
             }
             else
             {
-                Debug.LogError("CSS file not found at path: " + jsFilePath);
-                return "/* 404 - CSS File Not Found */";
+                Debug.LogError("ja file not found at path: " + jsFilePath);
+                return "/* 404 - js File Not Found */";
             }
         }
         catch (Exception e)
@@ -249,6 +283,37 @@ public class SimpleHttpServer : MonoBehaviour
             return "/* 500 - Internal Server Error */";
         }
     }
+
+    private string cup_content()
+    {
+        string[] counters = {cup_complete.ToJson(),cup_counter.ToJson()};
+        return ArrayOfJsonStringsToJson(counters);
+    }
+
+    private string pose_content()
+    {
+        // string message = "{";
+        string[] counters = new string[6];
+        counters[0] = counter1.ToJson();
+        counters[1] = counter2.ToJson();
+        counters[2] = counter3.ToJson();
+        counters[3] = counter4.ToJson();
+        counters[4] = counter5.ToJson();
+        counters[5] = counter6.ToJson();
+        // foreach (CounterScript counter in counters){
+        Debug.Log(counter1.ToJson());
+            return ArrayOfJsonStringsToJson(counters);
+        // }
+        // return message + "}";
+    }
+
+    public string current_exercise()
+    {
+        string WS_response = "{\"type\":\"exercise\",\"value\":\""+currentScene+"\"}";
+        SendUpdateString(WS_response);
+        return WS_response;
+    }
+
 
     private string InjectVariables(string html)
     {
@@ -300,6 +365,14 @@ public class SimpleHttpServer : MonoBehaviour
         }
     }
 
+    public void SendUpdateString(string text)
+    {
+        foreach (var session in wsServer.WebSocketServices["/ws"].Sessions.Sessions)
+        {
+            session.Context.WebSocket.Send(text);
+        }
+    }
+
     void OnDestroy()
     {
         if (listener != null && listener.IsListening)
@@ -316,5 +389,36 @@ public class SimpleHttpServer : MonoBehaviour
         {
             wsServer.Stop();
         }
+    }
+
+    // Convert array of JSON strings to a large JSON
+    string ArrayOfJsonStringsToJson(string[] jsonStrings)
+    {
+        // Create an array of objects
+        MyData[] dataArray = new MyData[jsonStrings.Length];
+        for (int i = 0; i < jsonStrings.Length; i++)
+        {
+            dataArray[i] = JsonUtility.FromJson<MyData>(jsonStrings[i]);
+
+        }
+
+        // Convert array of objects to a JSON string
+        Wrapper<MyData> wrapper = new Wrapper<MyData>();
+        wrapper.array = dataArray;
+        return JsonUtility.ToJson(wrapper);
+    }
+
+    // Wrapper class
+    [System.Serializable]
+    private class Wrapper<T>
+    {
+        public T[] array;
+    }
+
+    [System.Serializable]
+    public class MyData
+    {
+        public string type;
+        public int count;
     }
 }
