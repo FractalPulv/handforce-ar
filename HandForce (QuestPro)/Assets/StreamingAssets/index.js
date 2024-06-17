@@ -106,10 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedUser == 2){
                 load_image();
             }
-            else if (selectedUser != 1){
+            else if (selectedUser == 1){
+                load_exercise();
+            }
+            else{
                 alert(`Error: Selected user: \'${selectedUser}\' not found!`);
                 document.getElementById("radio1").checked = true;
-                load_exercise();
             }
             socket.send(JSON.stringify({ type: 'userChange', user: selectedUser }));
         });
@@ -148,7 +150,7 @@ function load_poses() {
         .then(response => response.json())
         .then(data => {
             poseDiv.className = "hidden";
-            updateExerciseStats(data, '<h1> Stats for pose exercise</h1>');
+            updateExerciseStats(data, '<h1> Stats for pose exercise</h1>',true);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -163,7 +165,7 @@ function load_cup() {
         .then(data => {
             console.log(data);
             cupDiv.className = "hidden";
-            updateExerciseStats(data, '<h1> Stats for cup exercise</h1>');
+            updateExerciseStats(data, '<h1> Stats for cup exercise</h1>',true);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -186,6 +188,9 @@ function load_exercise() {
                     load_poses();
                 }
             }
+            else {
+                updateExerciseStats("{}","<h1>  Select an exercise below to view stats </h1>",false);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -204,16 +209,38 @@ function UpdateCurrentExercise(jsonData, text) {
 
 function load_image() {
     const exerciseStatsDiv = document.getElementById('exercise-stats');
+
     const tempDiv = document.createElement('div');
-    exerciseStatsDiv.innerHTML = "<h1> Joris, Luc, Luca, Nikola, Wouter, Youp </h1>";
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.visibility = 'hidden';
+    tempDiv.style.height = 'auto';
+    tempDiv.style.width = exerciseStatsDiv.clientWidth + 'px';
+
+    tempDiv.innerHTML = "<h1> Joris, Luc, Luca, Nikola, Wouter, Youp </h1>";
     const p = document.createElement('img');
     p.id = `img`;
     p.src = 'https://i.imgur.com/nc3Zenr.jpeg';
     p.style = 'width: 50%'
-    exerciseStatsDiv.appendChild(p);  
+    tempDiv.appendChild(p);  
+    document.body.appendChild(tempDiv);
+    setTimeout(function() {
+        const newHeight = tempDiv.clientHeight;
+        document.body.removeChild(tempDiv);
+
+        exerciseStatsDiv.style.height = exerciseStatsDiv.clientHeight + 'px';
+        exerciseStatsDiv.offsetHeight;
+        exerciseStatsDiv.innerHTML = "<h1> Joris, Luc, Luca, Nikola, Wouter, Youp </h1>";
+        const q = document.createElement('img');
+        q.id = `img`;
+        q.src = 'https://i.imgur.com/nc3Zenr.jpeg';
+        q.style = 'width: 50%'
+        exerciseStatsDiv.appendChild(q); 
+        exerciseStatsDiv.style.height = newHeight + 'px';
+    }, 200);
+    
 }
 
-function updateExerciseStats(jsonData, text) {
+function updateExerciseStats(jsonData, text,use_json) {
     const exerciseStatsDiv = document.getElementById('exercise-stats');
 
     // Create a temporary div to calculate the new height
@@ -225,12 +252,14 @@ function updateExerciseStats(jsonData, text) {
 
     // Append the content to the temporary div
     tempDiv.innerHTML = text;
-    jsonData.array.forEach(item => {
-        const p = document.createElement('p');
-        p.id = `${item.type}`;
-        p.textContent = `score ${item.type}: ${item.count}`;
-        tempDiv.appendChild(p);
-    });
+    if (use_json){
+        jsonData.array.forEach(item => {
+            const p = document.createElement('p');
+            p.id = `${item.type}`;
+            p.textContent = `score ${item.type}: ${item.count}`;
+            tempDiv.appendChild(p);
+        });
+    }
     document.body.appendChild(tempDiv);
 
     // Get the calculated height
@@ -245,13 +274,14 @@ function updateExerciseStats(jsonData, text) {
 
     // Update the content
     exerciseStatsDiv.innerHTML = text;
-    jsonData.array.forEach(item => {
-        const p = document.createElement('p');
-        p.id = `type-${item.type}`;
-        p.textContent = `score ${item.type}: ${item.count}`;
-        exerciseStatsDiv.appendChild(p);
-    });
-
+    if (use_json){
+        jsonData.array.forEach(item => {
+            const p = document.createElement('p');
+            p.id = `type-${item.type}`;
+            p.textContent = `score ${item.type}: ${item.count}`;
+            exerciseStatsDiv.appendChild(p);
+        });
+    }
     // Animate to the new height
     exerciseStatsDiv.style.height = newHeight + 'px';
 }
