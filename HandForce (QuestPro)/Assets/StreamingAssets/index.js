@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             var type = data.type;
             var p = document.createElement("p");
-            p.textContent = `score ${data.type}: ${data.count}`;
+            p.textContent = `Score ${data.type}: ${data.count}`;
             p.id = `type-${type}`;
             document.getElementById(`type-${type}`).replaceWith(p);
         };
@@ -65,16 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
             cupDiv.className = "hidden";
             poseDiv.className = "hidden";
             chatBtn.style.backgroundColor = 'green';
+            document.getElementById("chat-btn").title = "WebSocket is CONNECTED ✅"
             if (refreshCheck) {
                 console.log("Refreshing");
                 clearTimeout(websocket_connect);
             }
+            UpdateCurrentExercise(last_json, "Currently In");
             refreshCheck = false; // Reset refresh check on successful connection
         };
 
         socket.onclose = function (event) {
             console.log("WebSocket connection closed");
             chatBtn.style.backgroundColor = 'red';
+            document.getElementById("chat-btn").title = "WebSocket is DISCONNECTED ❌"
             setTimeout(websocket_connect, 500); // Retry connection every 2 seconds
             refreshCheck = true;
             const cupDiv = document.getElementById(`cup_live`);
@@ -150,7 +153,7 @@ function load_poses() {
         .then(response => response.json())
         .then(data => {
             poseDiv.className = "hidden";
-            updateExerciseStats(data, '<h1> Stats for pose exercise</h1>',true);
+            updateExerciseStats(data, '<h1> Stats for Pose Exercise</h1>',true);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -165,7 +168,7 @@ function load_cup() {
         .then(data => {
             console.log(data);
             cupDiv.className = "hidden";
-            updateExerciseStats(data, '<h1> Stats for cup exercise</h1>',true);
+            updateExerciseStats(data, '<h1> Stats for Cup Exercise</h1>',true);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -189,7 +192,7 @@ function load_exercise() {
                 }
             }
             else {
-                updateExerciseStats("{}","<h1>  Select an exercise below to view stats </h1>",false);
+                updateExerciseStats("{}","<h1>  Select an Exercise Below to View Stats </h1>",false);
             }
         })
         .catch(error => {
@@ -256,7 +259,7 @@ function updateExerciseStats(jsonData, text,use_json) {
         jsonData.array.forEach(item => {
             const p = document.createElement('p');
             p.id = `${item.type}`;
-            p.textContent = `score ${item.type}: ${item.count}`;
+            p.textContent = `Score ${item.type}: ${item.count}`;
             tempDiv.appendChild(p);
         });
     }
@@ -278,7 +281,7 @@ function updateExerciseStats(jsonData, text,use_json) {
         jsonData.array.forEach(item => {
             const p = document.createElement('p');
             p.id = `type-${item.type}`;
-            p.textContent = `score ${item.type}: ${item.count}`;
+            p.textContent = `Score ${item.type}: ${item.count}`;
             exerciseStatsDiv.appendChild(p);
         });
     }

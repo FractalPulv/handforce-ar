@@ -152,6 +152,7 @@ body {
     height: 40px;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .notif-btn:hover, .chat-btn:hover, .help-btn:hover {
