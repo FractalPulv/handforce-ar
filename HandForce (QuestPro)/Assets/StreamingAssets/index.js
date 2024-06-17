@@ -2,6 +2,7 @@
 let last_json = "";
 let follow_current = true;
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("radio1").checked = true;
     // WebSocket client
     var URL = window.location.hostname + ":";
     var WebSocketType = "ws";
@@ -102,9 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
         user.addEventListener('change', (event) => {
             const selectedUser = event.target.value;
             console.log(`User changed to: ${selectedUser}`);
-            if (selectedUser != 1){
+            if (selectedUser == 2){
+                load_image();
+            }
+            else if (selectedUser != 1){
                 alert(`Error: Selected user: \'${selectedUser}\' not found!`);
                 document.getElementById("radio1").checked = true;
+                load_exercise();
             }
             socket.send(JSON.stringify({ type: 'userChange', user: selectedUser }));
         });
@@ -195,6 +200,17 @@ function UpdateCurrentExercise(jsonData, text) {
     span.className = "subtitle";
     span.textContent = `${text}: ${jsonData.value}`;
     currentExerciseDiv.replaceWith(span);
+}
+
+function load_image() {
+    const exerciseStatsDiv = document.getElementById('exercise-stats');
+    const tempDiv = document.createElement('div');
+    exerciseStatsDiv.innerHTML = "<h1> Joris, Luc, Luca, Nikola, Wouter, Youp </h1>";
+    const p = document.createElement('img');
+    p.id = `img`;
+    p.src = 'https://i.imgur.com/nc3Zenr.jpeg';
+    p.style = 'width: 50%'
+    exerciseStatsDiv.appendChild(p);  
 }
 
 function updateExerciseStats(jsonData, text) {
