@@ -28,9 +28,9 @@ MonoBehaviour:
       _state: 2
   _middleFeatureConfigs:
     _value:
-    - _mode: 0
+    - _mode: 1
       _feature: 1
-      _state: 3
+      _state: 5
     - _mode: 1
       _feature: 0
       _state: 2

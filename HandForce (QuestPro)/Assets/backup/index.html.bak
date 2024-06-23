@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Server Example</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, ${username}!</h1>
+        <p>Variable value: <span id="variableValue"></span></p>
+    </div>
+    <script>
+        // Function to fetch updated variable value from server
+        function fetchVariableValue() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var responseData = JSON.parse(xhr.responseText);
+                        document.getElementById("variableValue").textContent = responseData.value;
+                    }
+                    else {
+                        clearInterval(interval);
+                    }
+                }
+            };
+            xhr.open("GET", "/variable", true);
+            xhr.send();
+        }
+
+        // Update variable value initially
+        fetchVariableValue();
+
+        // Periodically update variable value
+        var interval = setInterval(fetchVariableValue, 1000); // Update every 5 seconds
+
+    </script>
+</body>
+</html>

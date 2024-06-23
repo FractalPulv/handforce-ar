@@ -15,15 +15,14 @@ Stroke victims often have difficulty with the simplest of tasks–drinking coffe
 ## Group Members <a name="group-members"></a>
 - Joris Beek
 - Nikola Kličková
-- Youp Cornelis Henry Lamb
+- Youp Lamb
 - Luc Melis
 - Wouter Muller
 - Luca Pulvirenti
 
 ## Hardware <a name="hardware"></a>
-- HoloLens 2?
-- XReal AR Glasses?
-- Quest?
+- HoloLens 2
+- Quest
 
 ## Development Software <a name="development-software"></a>
 - Unity 2022.3.21f1 (LTS)
