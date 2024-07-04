@@ -117,20 +117,20 @@ public class PoseMaintainLogic : MonoBehaviour
         {
             ResetCounters();
             ResetColors();
+            SimpleHttpServer.Instance.CounterList_pose[5].Increment();
+            SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[5]);
         }
     }
 
     private void ResetCounters(){
-        SimpleHttpServer.Instance.CounterList_pose[5].Increment();
-        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[5]);
         SimpleHttpServer.Instance.CounterList_pose[0].count_change(0);
-        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[0]);
         SimpleHttpServer.Instance.CounterList_pose[1].count_change(0);
-        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[1]);
         SimpleHttpServer.Instance.CounterList_pose[2].count_change(0);
-        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[2]);
         SimpleHttpServer.Instance.CounterList_pose[3].count_change(0);
-        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
+        SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[3]);
         SimpleHttpServer.Instance.CounterList_pose[4].count_change(0);
         SimpleHttpServer.Instance.SendUpdate(SimpleHttpServer.Instance.CounterList_pose[4]);
     }

@@ -69,7 +69,7 @@ public class SimpleHttpServer : MonoBehaviour
         counter3.type_change("3");
         counter4.type_change("4");
         counter5.type_change("5");
-        counter6.type_change("completed");
+        counter6.type_change("pose completed");
         cup_counter.type_change("count");
         cup_complete.type_change("completed");
 
